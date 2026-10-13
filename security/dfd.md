@@ -9,11 +9,19 @@
 
 ## 1. Diagram Aliran Data (Level 1)
 
+<div align="center">
+  <img src="dfd-diagram.png" alt="Diagram DFD Level 1 TanahKita" width="100%" />
+  <p><em>Gambar 1: Diagram Aliran Data Level 1 & Batas Kepercayaan (Desain Grafis draw.io)</em></p>
+</div>
+
 Notasi:
 * `E` = entitas eksternal, `P` = proses, `D` = penyimpanan data, `DF` = aliran data.
 * `TB` = batas kepercayaan (*trust boundary*).
 * **🔒** = aliran atau penyimpanan yang dilindungi mekanisme kriptografi yang **sudah diterapkan**.
 * **🔐** = perlindungan kriptografi yang **masih rencana** (Tugas 2/Tugas 3/Milestone 2).
+
+<details>
+<summary><strong>Klik untuk melihat Definisi Kode Sumber Diagram (Mermaid)</strong></summary>
 
 ```mermaid
 flowchart TD
@@ -77,6 +85,8 @@ flowchart TD
     style TB2 fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,stroke-dasharray: 5 5;
     style TB3 fill:#fffbeb,stroke:#d97706,stroke-width:2px,stroke-dasharray: 5 5;
 ```
+
+</details>
 
 ---
 
