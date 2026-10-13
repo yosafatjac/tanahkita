@@ -4,10 +4,10 @@
   "private": true,
   "description": "TanahKita — Satu Repositori Terintegrasi (PAW, Kriptografi, KKS)",
   "scripts": {
-    "dev": "npm --prefix web run dev",
-    "build": "npm --prefix web run build",
-    "start": "npm --prefix web run start",
-    "lint": "npm --prefix web run lint",
-    "test:crypto": "python3 -m unittest discover -s crypto/tests -p 'test_*.py' -v"
+    "dev": "npm --prefix pengembangan-aplikasi-web run dev",
+    "build": "npm --prefix pengembangan-aplikasi-web run build",
+    "start": "npm --prefix pengembangan-aplikasi-web run start",
+    "lint": "npm --prefix pengembangan-aplikasi-web run lint",
+    "test:crypto": "python3 -m unittest discover -s kriptografi/tests -p 'test_*.py' -v"
   }
 }

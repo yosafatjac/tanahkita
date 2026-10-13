@@ -23,8 +23,8 @@ Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capa
 
 ```text
 tanahkita/
-├── web/                       <-- [PAW / Pemweb] Aplikasi Web Next.js 15 & React 19 (Tag: v0.1)
-│   ├── src/                   <-- Ada src/ mandiri untuk Pemweb!
+├── pengembangan-aplikasi-web/ <-- [Pengembangan Aplikasi Web / PAW] (Tag: v0.1)
+│   ├── src/                   <-- Source code mandiri Next.js / TypeScript
 │   │   ├── app/               <-- 5 Halaman Aplikasi (Beranda, Daftar, Klaim, Verifikasi, Edukasi)
 │   │   ├── components/        <-- 8 Komponen Reusable UI
 │   │   ├── lib/               <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
@@ -34,8 +34,8 @@ tanahkita/
 │   ├── tailwind.config.ts
 │   └── README.md              <-- Dokumentasi teknis lengkap Pemweb
 │
-├── crypto/                    <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
-│   ├── src/                   <-- Ada src/ mandiri untuk Kriptografi!
+├── kriptografi/               <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
+│   ├── src/                   <-- Source code mandiri Python
 │   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (hashlib & hmac)
 │   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (secrets)
 │   │   └── chain.py           <-- Hash-chain sequential ledger riwayat tanah
@@ -43,21 +43,19 @@ tanahkita/
 │   │   └── test_crypto.py     <-- 5 Skenario Uji Unit Pytest/Unittest (Lolos 100%)
 │   └── README.md              <-- Matriks 3 Kebutuhan Perlindungan Data (K1-K5)
 │
-├── security/                  <-- [Keamanan Komputasi & Siber] Threat Model (Tag: sec-0.1)
+├── keamanan-komputasi-dan-siber/ <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1)
 │   ├── asset-inventory.md     <-- Inventarisasi 8 aset & klasifikasi CIA
 │   ├── dfd.md                 <-- DFD Level 1 dengan ID elemen, 3 trust boundary, marker kripto
 │   ├── threat-model.md        <-- 10+ Ancaman STRIDE spesifik pada elemen DFD
 │   └── risk-register.md       <-- Register 5 risiko prioritas & rencana kontrol mitigasi
 │
 ├── docs/
-│   └── web-milestone-1.md     <-- Dokumentasi teknis PAW Milestone 1
-├── package.json               <-- Konfigurasi Node.js & Script Dev / Test di root
-├── tsconfig.json              <-- Konfigurasi TypeScript
-├── next.config.ts             <-- Konfigurasi Next.js
-├── tailwind.config.ts         <-- Tema warna tanah adat Papua (earth, forest, ochre)
+│   ├── lighthouse-report.md   <-- Laporan Audit Aksesibilitas Lighthouse (Skor 98/100)
+│   └── screenshots/           <-- Tangkapan layar antarmuka ponsel, tablet, dan desktop
+├── package.json               <-- Proxy scripts root: 'npm run dev', 'npm run build', 'npm run test:crypto'
 ├── README.md                  <-- Dokumentasi Master ini
-├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI
-└── .gitignore                 <-- Pengabaian file lokal, cache, dan secrets
+├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI untuk ketiga mata kuliah
+└── .gitignore                 <-- Pengabaian file lokal, cache build, dan secrets
 ```
 
 ---
@@ -95,7 +93,7 @@ Dapat dijalankan langsung dari root proyek menggunakan `npm` atau `python3`:
 npm run test:crypto
 
 # Atau langsung menggunakan Python standard library (tanpa dependensi luar):
-python3 -m unittest discover -s crypto/tests -p "test_*.py" -v
+python3 -m unittest discover -s kriptografi/tests -p "test_*.py" -v
 ```
 
 Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**:

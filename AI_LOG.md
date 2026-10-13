@@ -20,28 +20,28 @@
   - "Buat modul Python menggunakan `hashlib` dan `secrets` untuk menghitung SHA-256 berkas patok tanah dan hash-chain riwayat tanah adat Papua."
   - "Buat 5 skenario pengujian unit otomatis yang memuat uji avalanche effect dan uji negatif manipulasi data 1 byte."
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `crypto/src/hasher.py`: Fungsi `hash_bytes`, `verify_hash`, dan `create_document_fingerprint`.
-  - `crypto/src/tokens.py`: Fungsi `generate_verification_token` dan `generate_elder_otp` berbasis CSPRNG.
-  - `crypto/src/chain.py`: Struktur `LandClaimRecord` dan logika verifikasi berantai `verify_integrity`.
-  - `crypto/tests/test_crypto.py`: Skenario uji unit `unittest`/`pytest`.
+  - `kriptografi/src/hasher.py`: Fungsi `hash_bytes`, `verify_hash`, dan `create_document_fingerprint`.
+  - `kriptografi/src/tokens.py`: Fungsi `generate_verification_token` dan `generate_elder_otp` berbasis CSPRNG.
+  - `kriptografi/src/chain.py`: Struktur `LandClaimRecord` dan logika verifikasi berantai `verify_integrity`.
+  - `kriptografi/tests/test_crypto.py`: Skenario uji unit `unittest`/`pytest`.
 * **Cara Memeriksa / Verifikasi Mandiri:**
-  - Menjalankan seluruh pengujian otomatis langsung di terminal: `python3 -m unittest discover -s crypto/tests -p "test_*.py" -v`.
+  - Menjalankan seluruh pengujian otomatis langsung di terminal: `python3 -m unittest discover -s kriptografi/tests -p "test_*.py" -v`.
   - Memverifikasi secara mandiri bahwa saat berkas diubah 1 karakter, fungsi `verify_hash` mengembalikan nilai boolean `False`.
   - Memastikan tidak ada kunci privat atau secret hardcoded di dalam repositori.
 
 ### B. Pengembangan Antarmuka Web (Milestone 1 PAW)
 * **Tujuan:** Merancang antarmuka Next.js/React yang semantik, responsif, memiliki komponen reusable, validasi formulir sisi klien, dan integrasi Web Crypto API.
 * **Ringkasan Perintah (Prompt):**
-  - "Rancang antarmuka web modern dengan Next.js App Router di root repository agar mudah dijalankan (`npm run dev`), terdiri dari 5 halaman (Beranda, Form Pendaftaran dengan validasi sisi klien, Detail Klaim, Portal Uji Verifikasi Dokumen, Edukasi Hukum Adat) menggunakan React, TypeScript, dan Tailwind CSS bertema tanah ulayat Papua."
+  - "Rancang antarmuka web modern dengan Next.js App Router di direktori `pengembangan-aplikasi-web/`, terdiri dari 5 halaman (Beranda, Form Pendaftaran dengan validasi sisi klien, Detail Klaim, Portal Uji Verifikasi Dokumen, Edukasi Hukum Adat) menggunakan React, TypeScript, dan Tailwind CSS bertema tanah ulayat Papua."
   - "Implementasikan 8 komponen reusable termasuk modal interaktif penjelasan kriptografi dan modal uji sidik jari berkas."
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `web/src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`, `CryptoExplainerModal`, `VerifyProofModal`.
-  - `web/src/lib/crypto.ts`: Utilitas peramban Web Crypto API (`window.crypto.subtle.digest`) untuk hashing SHA-256 client-side tanpa reload.
-  - `web/src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian, filter status, dan statistik.
-  - `web/src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien dan kalkulasi live SHA-256 saat berkas diunggah.
-  - `web/src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat, batas 4 penjuru, dan uji integritas rantai audit.
-  - `web/src/app/verifikasi/page.tsx`: Portal verifikasi dokumen mandiri dan simulator OTP musyawarah tetua adat.
-  - `web/src/app/edukasi/page.tsx`: Halaman landasan hukum adat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
+  - `pengembangan-aplikasi-web/src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`, `CryptoExplainerModal`, `VerifyProofModal`.
+  - `pengembangan-aplikasi-web/src/lib/crypto.ts`: Utilitas peramban Web Crypto API (`window.crypto.subtle.digest`) untuk hashing SHA-256 client-side tanpa reload.
+  - `pengembangan-aplikasi-web/src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian, filter status, dan statistik.
+  - `pengembangan-aplikasi-web/src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien dan kalkulasi live SHA-256 saat berkas diunggah.
+  - `pengembangan-aplikasi-web/src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat, batas 4 penjuru, dan uji integritas rantai audit.
+  - `pengembangan-aplikasi-web/src/app/verifikasi/page.tsx`: Portal verifikasi dokumen mandiri dan simulator OTP musyawarah tetua adat.
+  - `pengembangan-aplikasi-web/src/app/edukasi/page.tsx`: Halaman landasan hukum adat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
 * **Cara Memeriksa / Verifikasi Mandiri:**
   - Memeriksa kebenaran alur validasi formulir: memastikan form menolak jika nama marga kosong atau luas lahan tidak positif.
   - Menguji fungsi hashing sisi klien dengan mengunggah berkas di browser dan melihat kalkulasi SHA-256 secara langsung.
@@ -50,10 +50,10 @@
 ### C. Analisis Ancaman dan Manajemen Risiko (Tugas 1 KKS)
 * **Tujuan:** Menyusun DFD Level 1, analisis ancaman STRIDE spesifik pada elemen DFD, dan register risiko dengan rencana kontrol mitigasi.
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `security/asset-inventory.md`: Inventarisasi 8 aset utama sistem.
-  - `security/dfd.md`: DFD Level 1 memuat elemen ID, 3 trust boundary, dan tanda kripto.
-  - `security/threat-model.md`: 10 ancaman spesifik berbasis STRIDE.
-  - `security/risk-register.md`: 5 risiko prioritas dan pemetaan kontrol ke Tugas 2/Tugas 3.
+  - `keamanan-komputasi-dan-siber/asset-inventory.md`: Inventarisasi 8 aset utama sistem.
+  - `keamanan-komputasi-dan-siber/dfd.md`: DFD Level 1 memuat elemen ID, 3 trust boundary, dan tanda kripto.
+  - `keamanan-komputasi-dan-siber/threat-model.md`: 10 ancaman spesifik berbasis STRIDE.
+  - `keamanan-komputasi-dan-siber/risk-register.md`: 5 risiko prioritas dan pemetaan kontrol ke Tugas 2/Tugas 3.
 * **Cara Memeriksa / Verifikasi Mandiri:**
   - Memastikan tidak ada ancaman generik seperti "server diretas" atau "database dicuri".
   - Memastikan seluruh alasan kemungkinan dan dampak merujuk pada kondisi operasional produk di Timika/Mimika.
