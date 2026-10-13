@@ -26,7 +26,7 @@ flowchart TD
 
     subgraph TB2["TB2: Server Aplikasi"]
         P1["P1: Layanan Web & Validasi Masukan"]
-        P2["P2: Mesin Kriptografi (SHA-256 & CSPRNG)"]
+        P2["P2: Mesin Kriptografi (SHA-256)"]
         P3["P3: Pengelola Hash-Chain"]
         P4["P4: Verifikasi Integritas"]
     end
@@ -38,32 +38,32 @@ flowchart TD
         D3[("D3: Akun & Token 🔒🔐")]
         D4[("D4: Log Audit 🔐")]
         D5[("D5: Backup 🔐")]
-        D6[("D6: Secrets Aplikasi 🔐")]
+        D6[("D6: Secrets 🔐")]
     end
 
-    E1 -->|"DF1: Formulir klaim + berkas bukti"| P1
-    E2 -->|"DF2: Login + token persetujuan 🔒"| P1
-    E3 -->|"DF3: Login admin + konfigurasi 🔐"| P1
+    E1 -->|"DF1: Formulir"| P1
+    E2 -->|"DF2: Token Persetujuan 🔒"| P1
+    E3 -->|"DF3: Login Admin 🔐"| P1
 
-    P1 -->|"DF4: Data klaim tervalidasi + berkas"| P2
-    P2 -->|"DF5: Simpan berkas + digest SHA-256 🔒"| D1
-    P2 -->|"DF6: Data blok baru + digest"| P3
-    P3 -->|"DF7: Tambah blok berantai 🔒"| D2
-    P2 -->|"DF8: Simpan token CSPRNG 🔒"| D3
-    D3 -.->|"DF9: Baca hash kredensial & token 🔐"| P1
+    P1 -->|"DF4: Data Klaim"| P2
+    P2 -->|"DF5: Simpan Berkas 🔒"| D1
+    P2 -->|"DF6: Data Blok"| P3
+    P3 -->|"DF7: Tambah Blok 🔒"| D2
+    P2 -->|"DF8: Simpan Token 🔒"| D3
+    D3 -.->|"DF9: Hash Kredensial 🔐"| P1
 
-    P1 -->|"DF10: Permintaan uji integritas"| P4
-    D2 -.->|"DF11: Baca seluruh rantai 🔒"| P4
-    D1 -.->|"DF12: Baca berkas untuk hitung ulang 🔒"| P4
-    P4 -->|"DF13: Hasil verifikasi (valid / rusak)"| P1
+    P1 -->|"DF10: Minta Uji"| P4
+    D2 -.->|"DF11: Baca Rantai 🔒"| P4
+    D1 -.->|"DF12: Baca Berkas 🔒"| P4
+    P4 -->|"DF13: Hasil Verifikasi"| P1
 
-    P1 -.->|"DF14: Status klaim & hasil verifikasi"| E1
-    P1 -.->|"DF15: Daftar klaim menunggu verifikasi"| E2
+    P1 -.->|"DF14: Status Klaim"| E1
+    P1 -.->|"DF15: Daftar Verifikasi"| E2
 
-    P1 -->|"DF16: Catatan login & aksi pengguna"| D4
-    P3 -->|"DF17: Catatan perubahan status klaim"| D4
-    D2 -->|"DF18: Salinan backup terjadwal 🔐"| D5
-    D6 -.->|"DF19: Kunci sesi & kredensial basis data"| P1
+    P1 -->|"DF16: Log Pengguna"| D4
+    P3 -->|"DF17: Log Audit"| D4
+    D2 -->|"DF18: Backup Rantai 🔐"| D5
+    D6 -.->|"DF19: Secrets & Kunci 🔐"| P1
 ```
 
 ---
