@@ -39,9 +39,9 @@ Setiap risiko prioritas dilengkapi rencana kontrol teknis yang dirancang untuk m
 
 ```mermaid
 flowchart LR
-    RSK01["RSK-01: Manipulasi Batas (Skor 20)"] --> CTL01["Kontrol: Hash-Chain Mutlak & Least Privilege DB"] --> TUGAS2["Dipetakan ke: Tugas 2 (System Hardening)"]
+    RSK01["RSK-01: Manipulasi Batas (Skor 20)"] --> CTL01["Kontrol: Append-only DB, Head Hash di Luar Server, Log Audit"] --> TUGAS2["Dipetakan ke: Tugas 2 (System Hardening)"]
     RSK02["RSK-02: Spoofing Tetua Adat (Skor 15)"] --> CTL02["Kontrol: MFA/OTP Kripto via secrets module"] --> TUGAS2
-    RSK03["RSK-03: Eskalasi Wewenang (Skor 16)"] --> CTL03["Kontrol: RBAC Ketat di Sisi Server (FastAPI)"] --> TUGAS2
+    RSK03["RSK-03: Eskalasi Wewenang (Skor 16)"] --> CTL03["Kontrol: RBAC Ketat di Sisi Server API"] --> TUGAS2
     RSK04["RSK-04: DoS Unggahan Berkas (Skor 12)"] --> CTL04["Kontrol: Rate Limiting & Pembatas Ukuran Max 5MB"] --> TUGAS3["Dipetakan ke: Tugas 3 (Firewall & TLS)"]
     RSK05["RSK-05: Penyadapan Jaringan (Skor 12)"] --> CTL05["Kontrol: TLS 1.3 Strict & HSTS Header"] --> TUGAS3
 ```
@@ -49,8 +49,9 @@ flowchart LR
 ### Rincian Rencana Kontrol:
 
 1. **Kontrol untuk RSK-01 (Manipulasi Batas):**
-   * *Tindakan Kontrol:* Menerapkan verifikasi hash-chain matematis di mana setiap blok mengunci `previous_hash`. Admin yang mengubah 1 karakter di tabel database langsung membuat fungsi `verify_integrity()` mengembalikan status `False`. Menghapus hak akses `DELETE` dan `UPDATE` langsung pada tabel riwayat tanah.
-   * *Hasil:* Dampak turun drastis karena manipulasi mustahil dilakukan tanpa terdeteksi.
+   * *Kondisi saat ini (`v0.1`):* Hash-chain (`chain.py`) sudah mendeteksi perubahan pada sebagian blok. Namun admin yang punya akses tulis penuh ke `D2` masih bisa menghitung ulang **seluruh** rantai sehingga tetap tampak valid.
+   * *Tindakan Kontrol:* (a) mencabut hak `UPDATE`/`DELETE` pada tabel riwayat sehingga hanya bisa *append*; (b) mencatat *head hash* terbaru secara berkala di luar server (misal dibagikan ke tetua adat/pendamping hukum) agar rantai hasil hitung ulang ketahuan; (c) memisahkan akun admin server dari akun pengelola data; (d) log audit append-only (`D4`) untuk setiap aksi admin.
+   * *Hasil:* Kemungkinan turun dari 4 menjadi 2 karena manipulasi butuh kolusi beberapa pihak dan meninggalkan jejak.
    * *Target:* **Tugas 2 (Kontrol Akses dan System Hardening)**.
 
 2. **Kontrol untuk RSK-02 (Spoofing Tetua Adat):**

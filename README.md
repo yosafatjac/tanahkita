@@ -44,10 +44,10 @@ tanahkita/
 │   │   └── test_crypto.py     <-- 5 Skenario Uji Unit Pytest/Unittest (Lolos 100%)
 │   └── README.md              <-- Matriks 3 Kebutuhan Perlindungan Data (K1-K5)
 │
-├── Keamanan Komputasi dan Siber/ <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1)
-│   ├── asset-inventory.md     <-- Inventarisasi 8 aset & klasifikasi CIA
-│   ├── dfd.md                 <-- DFD Level 1 dengan ID elemen, 3 trust boundary, marker kripto
-│   ├── threat-model.md        <-- 10+ Ancaman STRIDE spesifik pada elemen DFD
+├── security/                  <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1) — path sesuai instruksi dosen
+│   ├── asset-inventory.md     <-- 12 aset (data, layanan, secrets, backup, log, akun admin) + alasan CIA
+│   ├── dfd.md                 <-- DFD Level 1: E1–E3, P1–P4, D1–D6, DF1–DF19, 3 trust boundary, penanda kripto
+│   ├── threat-model.md        <-- 13 ancaman STRIDE spesifik pada elemen DFD
 │   └── risk-register.md       <-- Register 5 risiko prioritas & rencana kontrol mitigasi
 │
 ├── docs/

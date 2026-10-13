@@ -50,10 +50,10 @@
 ### C. Analisis Ancaman dan Manajemen Risiko (Tugas 1 KKS)
 * **Tujuan:** Menyusun DFD Level 1, analisis ancaman STRIDE spesifik pada elemen DFD, dan register risiko dengan rencana kontrol mitigasi.
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `Keamanan Komputasi dan Siber/asset-inventory.md`: Inventarisasi 8 aset utama sistem.
-  - `Keamanan Komputasi dan Siber/dfd.md`: DFD Level 1 memuat elemen ID, 3 trust boundary, dan tanda kripto.
-  - `Keamanan Komputasi dan Siber/threat-model.md`: 10 ancaman spesifik berbasis STRIDE.
-  - `Keamanan Komputasi dan Siber/risk-register.md`: 5 risiko prioritas dan pemetaan kontrol ke Tugas 2/Tugas 3.
+  - `security/asset-inventory.md`: Inventarisasi 12 aset (data, layanan, secrets, backup, log, akun admin) dengan alasan rating CIA per aspek.
+  - `security/dfd.md`: DFD Level 1 memuat ID elemen (E1–E3, P1–P4, D1–D6, DF1–DF19), 3 trust boundary, dan penanda kripto diterapkan/rencana.
+  - `security/threat-model.md`: 13 ancaman spesifik berbasis STRIDE yang dipetakan ke elemen DFD dan aset.
+  - `security/risk-register.md`: 5 risiko prioritas dan pemetaan kontrol ke Tugas 2/Tugas 3.
 * **Cara Memeriksa / Verifikasi Mandiri:**
   - Memastikan tidak ada ancaman generik seperti "server diretas" atau "database dicuri".
   - Memastikan seluruh alasan kemungkinan dan dampak merujuk pada kondisi operasional produk di Timika/Mimika.
