@@ -1,4 +1,4 @@
-"useclient";
+"use client";
 
 import React, { useState } from "react";
 import { sha256File, compareHashes } from "@/lib/crypto";
