@@ -109,3 +109,20 @@ Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**:
 Repositori ini mematuhi prinsip kebersihan keamanan:
 - **Zero Secrets in Repo:** Tidak ada kunci privat, token produksi, kata sandi, atau data pribadi riil yang diunggah.
 - Seluruh data nama marga, nomor registrasi, koordinat patok, dan berkas bukti menggunakan **data tiruan realistis (*synthetic mock data*)** wilayah Mimika, Papua.
+
+---
+
+## 6. Bukti Tangkapan Layar & Hasil Pengujian (Milestone 1)
+
+Seluruh bukti implementasi antarmuka responsif, validasi formulir sisi klien, dan laporan aksesibilitas telah didokumentasikan dan disematkan langsung:
+
+| Pengujian | Keterangan Resolusi | Status Bukti Visual |
+| :--- | :--- | :---: |
+| **Layar Ponsel (Mobile)** | Lebar $\le 640\text{ px}$ (Diuji fisik pada iPhone Safari) | [Buka Screenshots](<Pengembangan Aplikasi Web/screenshots/mobile.png>) |
+| **Layar Tablet** | Lebar $768\text{ px}$ (Emulasi iPad Mini di Chrome DevTools) | [Buka Screenshots](<Pengembangan Aplikasi Web/screenshots/tablet.png>) |
+| **Layar Desktop** | Lebar $\ge 1024\text{ px}$ (Peramban Desktop $1042\text{ px} - 1280\text{ px}$) | [Buka Screenshots](<Pengembangan Aplikasi Web/screenshots/desktop.png>) |
+| **Validasi Formulir** | Indikator pesan kesalahan merah saat submit kosong | [Buka Screenshots](<Pengembangan Aplikasi Web/screenshots/form-validation.png>) |
+| **Audit Aksesibilitas** | Skor Lighthouse **98 / 100** (Melampaui standar $\ge 85$) | [Buka Screenshots](<Pengembangan Aplikasi Web/screenshots/lighthouse-score.png>) |
+
+> 📌 **Galeri Gambar Lengkap:** Seluruh gambar ditampilkan secara penuh (*inline image gallery*) pada berkas **[README Pengembangan Aplikasi Web](Pengembangan%20Aplikasi%20Web/README.md#7-bukti-tangkapan-layar-antarmuka--validasi-formulir)**.
+
