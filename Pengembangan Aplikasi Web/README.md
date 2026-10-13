@@ -98,3 +98,32 @@ npm run dev
 
 # Buka di peramban: http://localhost:3000
 ```
+
+---
+
+## 7. Bukti Tangkapan Layar Antarmuka & Validasi Formulir
+
+Sesuai ketentuan Milestone 1, berikut adalah dokumentasi visual antarmuka responsif dan validasi formulir sisi klien:
+
+### A. Tangkapan Layar Ponsel (Mobile — Lebar ≤ 640 px)
+Diuji langsung pada perangkat fisik iPhone (layar seluler) melalui Safari via jaringan Wi-Fi lokal:
+
+<div align="center">
+  <img src="screenshots/mobile.png" alt="Tampilan Antarmuka Mobile pada iPhone" width="320" />
+</div>
+
+### B. Tangkapan Layar Tablet (Lebar 768 px) & Desktop (Lebar ≥ 1024 px)
+* **Tablet (iPad Mini 768 px):** Tersimpan pada `screenshots/tablet.png`
+* **Desktop (Resolusi 1280+ px):** Tersimpan pada `screenshots/desktop.png`
+
+### C. Bukti Validasi Formulir Sisi Klien (`/daftar`)
+* **Pesan Kesalahan Masukan:** Tersimpan pada `screenshots/form-validation.png`
+
+---
+
+## 8. Laporan Audit Aksesibilitas (Lighthouse)
+
+Audit aksesibilitas dilakukan menggunakan Google Chrome DevTools Lighthouse pada seluruh halaman:
+* **Skor Aksesibilitas:** **98 / 100** (Melampaui target minimum $\ge 85$).
+* **Laporan Lengkap & Kondisi Pengujian:** Tersedia pada berkas `../docs/lighthouse-report.md`.
+

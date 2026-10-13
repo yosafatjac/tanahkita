@@ -30,9 +30,10 @@ tanahkita/
 │   │   ├── lib/               <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
 │   │   ├── data/              <-- Mock Data Marga Mimika Papua
 │   │   └── types/             <-- TypeScript definitions
+│   ├── screenshots/           <-- Tangkapan layar antarmuka ponsel, tablet, desktop, dan formulir
 │   ├── package.json
 │   ├── tailwind.config.ts
-│   └── README.md              <-- Dokumentasi teknis lengkap Pemweb
+│   └── README.md              <-- Dokumentasi teknis lengkap Pemweb (termasuk embed screenshot)
 │
 ├── Kriptografi/               <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
 │   ├── src/                   <-- Source code mandiri Python
@@ -50,8 +51,7 @@ tanahkita/
 │   └── risk-register.md       <-- Register 5 risiko prioritas & rencana kontrol mitigasi
 │
 ├── docs/
-│   ├── lighthouse-report.md   <-- Laporan Audit Aksesibilitas Lighthouse (Skor 98/100)
-│   └── screenshots/           <-- Tangkapan layar antarmuka ponsel, tablet, dan desktop
+│   └── lighthouse-report.md   <-- Laporan Audit Aksesibilitas Lighthouse (Skor 98/100)
 ├── package.json               <-- Proxy scripts root: 'npm run dev', 'npm run build', 'npm run test:crypto'
 ├── README.md                  <-- Dokumentasi Master ini
 ├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI untuk ketiga mata kuliah
