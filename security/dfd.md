@@ -16,8 +16,9 @@ Notasi:
 * **🔐** = perlindungan kriptografi yang **masih rencana** (Tugas 2/Tugas 3/Milestone 2).
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph TB1["TB1: Perangkat Klien (tidak dipercaya)"]
+        direction LR
         E1["E1: Pemohon Marga Adat"]
         E2["E2: Tetua Adat / Verifikator"]
         E3["E3: Administrator Sistem"]
@@ -25,12 +26,13 @@ flowchart LR
 
     subgraph TB2["TB2: Server Aplikasi"]
         P1["P1: Layanan Web & Validasi Masukan"]
-        P2["P2: Mesin Kriptografi<br/>(SHA-256 & CSPRNG)"]
+        P2["P2: Mesin Kriptografi (SHA-256 & CSPRNG)"]
         P3["P3: Pengelola Hash-Chain"]
         P4["P4: Verifikasi Integritas"]
     end
 
     subgraph TB3["TB3: Penyimpanan Terisolasi"]
+        direction LR
         D1[("D1: Berkas Bukti 🔒")]
         D2[("D2: Riwayat Hash-Chain 🔒")]
         D3[("D3: Akun & Token 🔒🔐")]
@@ -48,20 +50,20 @@ flowchart LR
     P2 -->|"DF6: Data blok baru + digest"| P3
     P3 -->|"DF7: Tambah blok berantai 🔒"| D2
     P2 -->|"DF8: Simpan token CSPRNG 🔒"| D3
-    D3 -->|"DF9: Baca hash kredensial & token 🔐"| P1
+    D3 -.->|"DF9: Baca hash kredensial & token 🔐"| P1
 
     P1 -->|"DF10: Permintaan uji integritas"| P4
-    D2 -->|"DF11: Baca seluruh rantai 🔒"| P4
-    D1 -->|"DF12: Baca berkas untuk hitung ulang digest 🔒"| P4
-    P4 -->|"DF13: Hasil verifikasi (valid / rusak di blok ke-n)"| P1
+    D2 -.->|"DF11: Baca seluruh rantai 🔒"| P4
+    D1 -.->|"DF12: Baca berkas untuk hitung ulang 🔒"| P4
+    P4 -->|"DF13: Hasil verifikasi (valid / rusak)"| P1
 
-    P1 -->|"DF14: Status klaim & hasil verifikasi"| E1
-    P1 -->|"DF15: Daftar klaim menunggu verifikasi"| E2
+    P1 -.->|"DF14: Status klaim & hasil verifikasi"| E1
+    P1 -.->|"DF15: Daftar klaim menunggu verifikasi"| E2
 
     P1 -->|"DF16: Catatan login & aksi pengguna"| D4
     P3 -->|"DF17: Catatan perubahan status klaim"| D4
-    D2 -->|"DF18: Salinan terjadwal 🔐"| D5
-    D6 -->|"DF19: Kunci sesi & kredensial basis data"| P1
+    D2 -->|"DF18: Salinan backup terjadwal 🔐"| D5
+    D6 -.->|"DF19: Kunci sesi & kredensial basis data"| P1
 ```
 
 ---
