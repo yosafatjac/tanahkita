@@ -144,7 +144,13 @@ Membuktikan mekanisme *client-side validation* bekerja seketika saat pengguna me
 Audit aksesibilitas dijalankan menggunakan Google Chrome DevTools Lighthouse pada seluruh rute aplikasi:
 * **Skor Aksesibilitas Rata-Rata:** **98 / 100** (Melampaui standar minimal kelulusan $\ge 85$).
 * **Kepatuhan Standar:** WCAG 2.2 Level AA (Rasio kontras warna $\ge 4.5:1$, elemen semantik HTML5, ARIA label, dan navigasi ramah pembaca layar).
-* **Laporan Lengkap & Kondisi Pengujian:** Tersedia pada berkas [lighthouse-report.md](../docs/lighthouse-report.md).
+
+### Kondisi Pengujian Lingkungan (Sesuai Ketentuan Pengujian):
+* **Mode Pengujian (Audit Mode):** Navigation (Default)
+* **Perangkat yang Diemulasikan:** Mobile (Moto G Power / iPhone SE, 375–412 px) & Desktop (1920 × 1080 px)
+* **Versi Peramban & Mesin:** Google Chrome v129.0 / Chromium DevTools Lighthouse v12.2.0
+* **Halaman yang Diuji:** `/` (Beranda), `/daftar` (Formulir), `/klaim/[id]` (Detail), `/verifikasi` (Uji Hash), `/edukasi` (Hukum Adat)
+* **Dokumen Rinci:** Laporan detail tersedia pada [docs/lighthouse-report.md](../docs/lighthouse-report.md).
 
 <div align="center">
   <img src="screenshots/lighthouse-score.png" alt="Bukti Audit Lighthouse Aksesibilitas Skor 98/100" width="800" />
