@@ -35,13 +35,13 @@
   - "Rancang antarmuka web modern dengan Next.js App Router di root repository agar mudah dijalankan (`npm run dev`), terdiri dari 5 halaman (Beranda, Form Pendaftaran dengan validasi sisi klien, Detail Klaim, Portal Uji Verifikasi Dokumen, Edukasi Hukum Adat) menggunakan React, TypeScript, dan Tailwind CSS bertema tanah ulayat Papua."
   - "Implementasikan 8 komponen reusable termasuk modal interaktif penjelasan kriptografi dan modal uji sidik jari berkas."
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`, `CryptoExplainerModal`, `VerifyProofModal`.
-  - `src/lib/crypto.ts`: Utilitas peramban Web Crypto API (`window.crypto.subtle.digest`) untuk hashing SHA-256 client-side tanpa reload.
-  - `src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian, filter status, dan statistik.
-  - `src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien dan kalkulasi live SHA-256 saat berkas diunggah.
-  - `src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat, batas 4 penjuru, dan uji integritas rantai audit.
-  - `src/app/verifikasi/page.tsx`: Portal verifikasi dokumen mandiri dan simulator OTP musyawarah tetua adat.
-  - `src/app/edukasi/page.tsx`: Halaman landasan hukum adat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
+  - `web/src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`, `CryptoExplainerModal`, `VerifyProofModal`.
+  - `web/src/lib/crypto.ts`: Utilitas peramban Web Crypto API (`window.crypto.subtle.digest`) untuk hashing SHA-256 client-side tanpa reload.
+  - `web/src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian, filter status, dan statistik.
+  - `web/src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien dan kalkulasi live SHA-256 saat berkas diunggah.
+  - `web/src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat, batas 4 penjuru, dan uji integritas rantai audit.
+  - `web/src/app/verifikasi/page.tsx`: Portal verifikasi dokumen mandiri dan simulator OTP musyawarah tetua adat.
+  - `web/src/app/edukasi/page.tsx`: Halaman landasan hukum adat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
 * **Cara Memeriksa / Verifikasi Mandiri:**
   - Memeriksa kebenaran alur validasi formulir: memastikan form menolak jika nama marga kosong atau luas lahan tidak positif.
   - Menguji fungsi hashing sisi klien dengan mengunggah berkas di browser dan melihat kalkulasi SHA-256 secara langsung.

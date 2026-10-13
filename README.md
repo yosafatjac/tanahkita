@@ -23,31 +23,19 @@ Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capa
 
 ```text
 tanahkita/
-├── src/                       <-- [PAW] Sumber Kode Aplikasi Web Next.js 15 & React 19
-│   ├── app/                   <-- 5 Halaman Aplikasi:
-│   │   ├── page.tsx           <-- 1. Beranda (Katalog Klaim, Filter Distrik, Statistik)
-│   │   ├── daftar/page.tsx    <-- 2. Formulir Pendaftaran (Validasi Sisi Klien + Live SHA-256)
-│   │   ├── klaim/[id]/page.tsx<-- 3. Detail Klaim (Batas 4 Arah, Bukti Berkas, Rantai Audit)
-│   │   ├── verifikasi/page.tsx<-- 4. Portal Uji Hash Dokumen Mandiri & Simulator OTP Tetua Adat
-│   │   └── edukasi/page.tsx   <-- 5. Landasan Hukum Adat Papua & Edukasi Kriptografi
-│   ├── components/            <-- 8 Komponen Reusable:
-│   │   ├── Navbar.tsx         <-- Navigasi responsif + modal toggle
-│   │   ├── Footer.tsx         <-- Batasan non-BPN & identitas pengembang
-│   │   ├── ClaimCard.tsx      <-- Kartu klaim adat + aksi uji berkas
-│   │   ├── StatusBadge.tsx    <-- Lencana status WCAG AA kontras tinggi
-│   │   ├── HashViewer.tsx     <-- Penampil ringkasan hash + tombol salin
-│   │   ├── AuditTimeline.tsx  <-- Visualisasi rantai audit + uji integritas interaktif
-│   │   ├── CryptoExplainerModal.tsx <-- Modal edukasi cara kerja kripto
-│   │   └── VerifyProofModal.tsx     <-- Modal uji integritas berkas live Web Crypto
-│   ├── lib/                   <-- Utilitas Klien:
-│   │   └── crypto.ts          <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
-│   ├── data/
-│   │   └── mockClaims.ts      <-- Data tiruan realistis 4 Marga Mimika (Magal, Matuan, Beanal, Murib)
-│   └── types/
-│       └── claim.ts           <-- Definisi TypeScript lengkap
+├── web/                       <-- [PAW / Pemweb] Aplikasi Web Next.js 15 & React 19 (Tag: v0.1)
+│   ├── src/                   <-- Ada src/ mandiri untuk Pemweb!
+│   │   ├── app/               <-- 5 Halaman Aplikasi (Beranda, Daftar, Klaim, Verifikasi, Edukasi)
+│   │   ├── components/        <-- 8 Komponen Reusable UI
+│   │   ├── lib/               <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
+│   │   ├── data/              <-- Mock Data Marga Mimika Papua
+│   │   └── types/             <-- TypeScript definitions
+│   ├── package.json
+│   ├── tailwind.config.ts
+│   └── README.md              <-- Dokumentasi teknis lengkap Pemweb
 │
 ├── crypto/                    <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
-│   ├── src/
+│   ├── src/                   <-- Ada src/ mandiri untuk Kriptografi!
 │   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (hashlib & hmac)
 │   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (secrets)
 │   │   └── chain.py           <-- Hash-chain sequential ledger riwayat tanah

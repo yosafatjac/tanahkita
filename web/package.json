@@ -1,0 +1,27 @@
+{
+  "name": "tanahkita",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Platform Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua (Kabupaten Mimika)",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:crypto": "python3 -m unittest discover -s crypto/tests -p 'test_*.py' -v"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "^15.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
