@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import HashViewer from "../../components/HashViewer";
+import { sha256File, sha256Text } from "@/lib/crypto";
 
 interface FormData {
   marga: string;
@@ -42,6 +43,8 @@ export default function DaftarKlaimPage() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [fileHash, setFileHash] = useState<string>("");
+  const [isHashingFile, setIsHashingFile] = useState<boolean>(false);
   const [submittedData, setSubmittedData] = useState<{
     noReg: string;
     generatedHash: string;
@@ -134,10 +137,19 @@ export default function DaftarKlaimPage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setFormData((prev) => ({ ...prev, namaBerkas: file.name }));
+      setIsHashingFile(true);
+      try {
+        const hash = await sha256File(file);
+        setFileHash(hash);
+      } catch (err) {
+        console.error("Gagal menghitung hash berkas:", err);
+      } finally {
+        setIsHashingFile(false);
+      }
       if (errors.namaBerkas) {
         setErrors((prev) => {
           const next = { ...prev };
@@ -148,18 +160,20 @@ export default function DaftarKlaimPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      // Simulasi pembangkitan nomor registrasi dan hash SHA-256
-      const randomHex = Array.from({ length: 64 }, () =>
-        Math.floor(Math.random() * 16).toString(16)
-      ).join("");
+      const payloadString = JSON.stringify({
+        ...formData,
+        fileHash,
+        waktuRegistrasi: new Date().toISOString(),
+      });
+      const recordHash = await sha256Text(payloadString);
       const randomId = Math.floor(100 + Math.random() * 900);
 
       setSubmittedData({
         noReg: `TK-MMK-2026-${randomId}`,
-        generatedHash: randomHex,
+        generatedHash: fileHash || recordHash,
         timestamp: new Date().toISOString(),
       });
     }
@@ -579,9 +593,21 @@ export default function DaftarKlaimPage() {
                 className="block w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer"
               />
               {formData.namaBerkas && (
-                <p className="text-xs text-emerald-800 mt-2 font-medium">
-                  ✓ Berkas terpilih: <span className="font-mono">{formData.namaBerkas}</span> (Akan di-hash SHA-256 saat submit)
-                </p>
+                <div className="mt-2 space-y-1">
+                  <p className="text-xs text-emerald-800 font-medium">
+                    ✓ Berkas terpilih: <span className="font-mono">{formData.namaBerkas}</span>
+                  </p>
+                  {isHashingFile ? (
+                    <p className="text-[11px] text-amber-800 animate-pulse">
+                      ⏳ Menghitung sidik jari SHA-256 di browser...
+                    </p>
+                  ) : fileHash ? (
+                    <div className="p-2 bg-stone-900 text-stone-200 rounded font-mono text-[11px] break-all border border-stone-800">
+                      <span className="text-stone-400 block text-[10px]">Sidik Jari SHA-256 (Web Crypto):</span>
+                      {fileHash}
+                    </div>
+                  ) : null}
+                </div>
               )}
               {errors.namaBerkas && (
                 <p id="error-berkas" role="alert" className="text-[11px] text-rose-600 mt-1">

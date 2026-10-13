@@ -13,38 +13,63 @@
 **TanahKita** adalah platform pencatatan dan verifikasi bukti penguasaan tanah ulayat bagi masyarakat adat di Papua (khususnya Kabupaten Mimika dan Timika) yang belum bersertifikat BPN. Sistem ini dirancang agar bukti penguasaan adat terdokumentasi secara terstruktur dan tidak dapat diubah tanpa terdeteksi (*tamper-evident*).
 
 > **Penegasan Batasan Hukum:**  
-> Sistem ini **BUKAN** pengganti sertifikat resmi Badan Pertanahan Nasional (BPN) dan tidak dapat diklaim sebagai alas hak mutlak hukum agraria negara. Fungsinya adalah memperkuat posisi pembuktian masyarakat adat dalam mendokumentasikan batas alam lisan, mencegah pemalsuan bukti sepihak, dan menjadi bahan rujukan mediasi atau permohonan sertifikasi komunal di masa depan.
+> Sistem ini **BUKAN** pengganti sertifikat resmi Badan Pertanahan Nasional (BPN) dan tidak dapat diklaim sebagai alas hak mutlak hukum agraria negara. Fungsinya adalah memperkuat posisi pembuktian masyarakat adat dalam mendokumentasikan batas alam lisan, mencegah pemalsuan bukti sepihak oleh mafia tanah, dan menjadi bahan rujukan mediasi adat atau permohonan sertifikasi komunal di masa depan.
 
 ---
 
-## 2. Integrasi Tiga Mata Kuliah (Produk Digital Bersama)
+## 2. Struktur Repositori & Integrasi Tiga Mata Kuliah
 
-Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capaian tiga mata kuliah semester 5:
+Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capaian tiga mata kuliah semester 5 (PAW, Kriptografi, dan KKS):
 
 ```text
 tanahkita/
-├── web/                       <-- [Pengembangan Aplikasi Web] Milestone 1 (Tag: v0.1)
+├── src/                       <-- [PAW] Sumber Kode Aplikasi Web Next.js 15 & React 19
+│   ├── app/                   <-- 5 Halaman Aplikasi:
+│   │   ├── page.tsx           <-- 1. Beranda (Katalog Klaim, Filter Distrik, Statistik)
+│   │   ├── daftar/page.tsx    <-- 2. Formulir Pendaftaran (Validasi Sisi Klien + Live SHA-256)
+│   │   ├── klaim/[id]/page.tsx<-- 3. Detail Klaim (Batas 4 Arah, Bukti Berkas, Rantai Audit)
+│   │   ├── verifikasi/page.tsx<-- 4. Portal Uji Hash Dokumen Mandiri & Simulator OTP Tetua Adat
+│   │   └── edukasi/page.tsx   <-- 5. Landasan Hukum Adat Papua & Edukasi Kriptografi
+│   ├── components/            <-- 8 Komponen Reusable:
+│   │   ├── Navbar.tsx         <-- Navigasi responsif + modal toggle
+│   │   ├── Footer.tsx         <-- Batasan non-BPN & identitas pengembang
+│   │   ├── ClaimCard.tsx      <-- Kartu klaim adat + aksi uji berkas
+│   │   ├── StatusBadge.tsx    <-- Lencana status WCAG AA kontras tinggi
+│   │   ├── HashViewer.tsx     <-- Penampil ringkasan hash + tombol salin
+│   │   ├── AuditTimeline.tsx  <-- Visualisasi rantai audit + uji integritas interaktif
+│   │   ├── CryptoExplainerModal.tsx <-- Modal edukasi cara kerja kripto
+│   │   └── VerifyProofModal.tsx     <-- Modal uji integritas berkas live Web Crypto
+│   ├── lib/                   <-- Utilitas Klien:
+│   │   └── crypto.ts          <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
+│   ├── data/
+│   │   └── mockClaims.ts      <-- Data tiruan realistis 4 Marga Mimika (Magal, Matuan, Beanal, Murib)
+│   └── types/
+│       └── claim.ts           <-- Definisi TypeScript lengkap
+│
+├── crypto/                    <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
 │   ├── src/
-│   │   ├── components/        <-- 6 Komponen Reusable (Navbar, Footer, ClaimCard, StatusBadge, HashViewer, AuditTimeline)
-│   │   ├── app/               <-- 3 Halaman Aplikasi (Beranda, Form Pendaftaran Validasi Klien, Detail Klaim Kripto)
-│   │   ├── data/              <-- Mock Data Marga Mimika Papua (Magal, Matuan, Beanal, Murib)
-│   │   └── types/             <-- TypeScript Interfaces
-│   └── README.md              <-- Dokumentasi teknis antarmuka & responsivitas
+│   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (hashlib & hmac)
+│   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (secrets)
+│   │   └── chain.py           <-- Hash-chain sequential ledger riwayat tanah
+│   ├── tests/
+│   │   └── test_crypto.py     <-- 5 Skenario Uji Unit Pytest/Unittest (Lolos 100%)
+│   └── README.md              <-- Matriks 3 Kebutuhan Perlindungan Data (K1-K5)
 │
-├── crypto/                    <-- [Kriptografi] Fondasi dan Komponen Dasar (Tag: v0.1)
-│   ├── src/                   <-- Modul SHA-256 (hasher.py), Hash-Chain (chain.py), CSPRNG Secrets (tokens.py)
-│   ├── tests/                 <-- 5 Skenario Uji Otomatis Pytest (Uji Positif & Uji Negatif)
-│   └── README.md              <-- Pemetaan 3 Data Dilindungi, I/O, Alasan Pustaka
+├── security/                  <-- [Keamanan Komputasi & Siber] Threat Model (Tag: sec-0.1)
+│   ├── asset-inventory.md     <-- Inventarisasi 8 aset & klasifikasi CIA
+│   ├── dfd.md                 <-- DFD Level 1 dengan ID elemen, 3 trust boundary, marker kripto
+│   ├── threat-model.md        <-- 10+ Ancaman STRIDE spesifik pada elemen DFD
+│   └── risk-register.md       <-- Register 5 risiko prioritas & rencana kontrol mitigasi
 │
-├── security/                  <-- [Keamanan Komputasi & Siber] Threat Model & Risiko (Tag: sec-0.1)
-│   ├── asset-inventory.md     <-- Inventarisasi Aset & Data Sensitif
-│   ├── dfd.md                 <-- DFD ID Elemen + 3 Trust Boundaries + Tanda Kripto
-│   ├── threat-model.md        <-- 10+ Ancaman Spesifik Kategori STRIDE
-│   └── risk-register.md       <-- 5 Risiko Prioritas & Rencana Kontrol
-│
-├── README.md                  <-- Dokumentasi Utama Repositori
-├── AI_LOG.md                  <-- Catatan Transparansi Pemanfaatan AI
-└── .gitignore                 <-- Pengabaian dependensi, cache, dan secrets
+├── docs/
+│   └── web-milestone-1.md     <-- Dokumentasi teknis PAW Milestone 1
+├── package.json               <-- Konfigurasi Node.js & Script Dev / Test di root
+├── tsconfig.json              <-- Konfigurasi TypeScript
+├── next.config.ts             <-- Konfigurasi Next.js
+├── tailwind.config.ts         <-- Tema warna tanah adat Papua (earth, forest, ochre)
+├── README.md                  <-- Dokumentasi Master ini
+├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI
+└── .gitignore                 <-- Pengabaian file lokal, cache, dan secrets
 ```
 
 ---
@@ -53,38 +78,48 @@ tanahkita/
 
 | Penanda (Tag) | Mata Kuliah | Status | Keterangan |
 | :---: | :--- | :---: | :--- |
-| **`v0.1`** | **Pengembangan Aplikasi Web** | Selesai | Milestone 1: 3 Halaman, 6 Komponen, Form validasi sisi klien, desain responsif mobile-first, mock data. |
-| **`v0.1`** | **Kriptografi** | Selesai | Komponen SHA-256 berkas fisik, Hash-chain riwayat tanah, CSPRNG tokens, 5 tes otomatis lolos 100%. |
-| **`sec-0.1`** | **Keamanan Komputasi & Siber** | Siap | Tugas 1: DFD dengan 3 trust boundary, 10+ threat STRIDE, 5 risiko prioritas, rencana kontrol mitigasi. |
+| **`v0.1`** | **Pengembangan Aplikasi Web** | Selesai | Milestone 1: 5 Halaman, 8 Komponen Reusable, Validasi sisi klien ketat, Live Web Crypto hashing di peramban, WCAG AA. |
+| **`v0.1`** | **Kriptografi** | Selesai | Tugas 1: Pustaka standar `hashlib` & `secrets`, 3 kebutuhan proteksi data, 5 skenario uji otomatis lolos 100% dalam 0.001s. |
+| **`sec-0.1`** | **Keamanan Komputasi & Siber** | Siap | Tugas 1: DFD dengan 3 trust boundary, 10+ threat STRIDE, 5 risiko prioritas beralasan kondisi produk, rencana kontrol Tugas 2/3. |
 
 ---
 
-## 4. Petunjuk Menjalankan Pengujian
+## 4. Cara Menjalankan Aplikasi & Pengujian
 
-### A. Komponen Kriptografi (Python)
-Pengujian otomatis komponen kriptografi dapat dijalankan dengan satu perintah:
+### A. Menjalankan Antarmuka Web (Next.js)
+Dari direktori utama repositori (`tanahkita`):
 
 ```bash
-# Menjalankan seluruh pengujian unit kriptografi:
-python3 -m unittest discover -s crypto/tests -p "test_*.py" -v
-
-# Atau menggunakan pytest:
-pytest crypto/tests/ -v
-```
-
-Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**, termasuk deteksi manipulasi berkas 1-byte dan deteksi modifikasi blok riwayat di tengah rantai.
-
-### B. Antarmuka Web (Next.js & TypeScript)
-```bash
-cd web
+# 1. Pasang dependensi
 npm install
+
+# 2. Jalankan server pengembangan lokal
 npm run dev
-# Buka di peramban: http://localhost:3000
+
+# 3. Buka peramban di: http://localhost:3000
 ```
+
+### B. Menjalankan Pengujian Unit Kriptografi (Python)
+Dapat dijalankan langsung dari root proyek menggunakan `npm` atau `python3`:
+
+```bash
+# Melalui script npm:
+npm run test:crypto
+
+# Atau langsung menggunakan Python standard library (tanpa dependensi luar):
+python3 -m unittest discover -s crypto/tests -p "test_*.py" -v
+```
+
+Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**:
+- Deterministic SHA-256 & Avalanche Effect.
+- Deteksi manipulasi dokumen 1-byte (Uji Negatif).
+- Entropi tinggi & keunikan token CSPRNG tetua adat.
+- Integritas rantai riwayat tanah utuh dari blok genesis.
+- Deteksi manipulasi data riwayat di tengah rantai (Uji Negatif).
 
 ---
 
 ## 5. Etika Data dan Keamanan Nilai Rahasia
 Repositori ini mematuhi prinsip kebersihan keamanan:
-- **Tidak ada kunci privat, token produksi, kata sandi, atau data pribadi riil** yang diunggah ke repositori.
-- Seluruh data nama marga, nomor registrasi, koordinat patok, dan berkas bukti menggunakan **data tiruan (*synthetic mock data*)**.
+- **Zero Secrets in Repo:** Tidak ada kunci privat, token produksi, kata sandi, atau data pribadi riil yang diunggah.
+- Seluruh data nama marga, nomor registrasi, koordinat patok, dan berkas bukti menggunakan **data tiruan realistis (*synthetic mock data*)** wilayah Mimika, Papua.

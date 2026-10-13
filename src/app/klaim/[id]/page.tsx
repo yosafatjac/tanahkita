@@ -1,11 +1,12 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import { MOCK_CLAIMS } from "../../../data/mockClaims";
 import StatusBadge from "../../../components/StatusBadge";
 import HashViewer from "../../../components/HashViewer";
 import AuditTimeline from "../../../components/AuditTimeline";
+import VerifyProofModal from "../../../components/VerifyProofModal";
 
 interface ClaimDetailPageProps {
   params: Promise<{ id: string }>;
@@ -16,6 +17,10 @@ export default function ClaimDetailPage({ params }: ClaimDetailPageProps) {
   const claimId = resolvedParams.id;
 
   const claim = MOCK_CLAIMS.find((c) => c.id === claimId) || MOCK_CLAIMS[0];
+  const [selectedDoc, setSelectedDoc] = useState<{
+    namaFile: string;
+    sha256: string;
+  } | null>(null);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -153,9 +158,18 @@ export default function ClaimDetailPage({ params }: ClaimDetailPageProps) {
                     <span className="text-[11px] text-stone-500">{doc.tipeBerkas}</span>
                   </div>
                 </div>
-                <span className="text-xs text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full font-semibold border border-emerald-300">
-                  ✓ Sidik Jari Terkunci
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full font-semibold border border-emerald-300">
+                    ✓ Sidik Jari Terkunci
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedDoc(doc)}
+                    className="text-xs bg-stone-200 hover:bg-stone-300 text-stone-800 px-2.5 py-0.5 rounded font-medium transition-colors"
+                  >
+                    Uji Keaslian
+                  </button>
+                </div>
               </div>
 
               <HashViewer hash={doc.sha256} label="Nilai SHA-256 Digest (FIPS 180-4):" compact={false} />
@@ -185,6 +199,17 @@ export default function ClaimDetailPage({ params }: ClaimDetailPageProps) {
           + Daftarkan Klaim Baru
         </Link>
       </div>
+
+      {/* Modal Uji Dokumen */}
+      {selectedDoc && (
+        <VerifyProofModal
+          isOpen={!!selectedDoc}
+          onClose={() => setSelectedDoc(null)}
+          targetClaimId={claim.nomorRegistrasi}
+          expectedHash={selectedDoc.sha256}
+          documentTitle={selectedDoc.namaFile}
+        />
+      )}
     </div>
   );
 }

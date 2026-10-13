@@ -28,7 +28,7 @@ export default function HomePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* 1. Hero Section */}
-      <section className="bg-gradient-to-br from-amber-950 via-amber-900 to-stone-900 text-white rounded-2xl p-6 sm:p-10 mb-10 shadow-lg border border-amber-800/40">
+      <section className="bg-gradient-to-br from-amber-950 via-amber-900 to-stone-900 text-white rounded-2xl p-6 sm:p-10 mb-8 shadow-lg border border-amber-800/40">
         <div className="max-w-3xl">
           <div className="inline-flex items-center gap-2 bg-amber-800/60 border border-amber-600/40 text-amber-200 text-xs px-3 py-1 rounded-full mb-4">
             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -51,18 +51,27 @@ export default function HomePage() {
             >
               + Catat Klaim Tanah Adat
             </Link>
+            <Link
+              href="/verifikasi"
+              className="px-4 py-2.5 rounded-lg bg-stone-900/80 hover:bg-stone-800 text-amber-300 border border-amber-600/50 font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 flex items-center space-x-1.5"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span>Uji Hash Dokumen</span>
+            </Link>
             <a
               href="#daftar-klaim"
               className="px-4 py-2.5 rounded-lg bg-amber-900/60 hover:bg-amber-900 text-amber-200 border border-amber-700/60 font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400"
             >
-              Jelajahi Bukti Terdaftar
+              Jelajahi Bukti Terdaftar ↓
             </a>
           </div>
         </div>
       </section>
 
       {/* 2. Kartu Statistik Ringkas */}
-      <section aria-labelledby="judul-statistik" className="mb-10">
+      <section aria-labelledby="judul-statistik" className="mb-8">
         <h2 id="judul-statistik" className="sr-only">Statistik Ringkasan Klaim</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm">
@@ -91,7 +100,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Panel Filter & Pencarian */}
+      {/* 3. Baris Navigasi Fitur Tambahan (Edukasi & Portal Uji) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+          <div>
+            <h3 className="text-xs font-bold text-emerald-950 uppercase tracking-wider">
+              Uji Integritas Dokumen Adat (Web Crypto)
+            </h3>
+            <p className="text-xs text-emerald-800 mt-0.5">
+              Unggah berkas untuk menghitung live SHA-256 dan memverifikasi keaslian terhadap register adat.
+            </p>
+          </div>
+          <Link
+            href="/verifikasi"
+            className="ml-4 px-3 py-1.5 rounded-lg bg-emerald-800 text-white text-xs font-semibold hover:bg-emerald-900 flex-shrink-0 transition-colors"
+          >
+            Buka Portal →
+          </Link>
+        </div>
+
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between">
+          <div>
+            <h3 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
+              Landasan Hukum & Kriptografi
+            </h3>
+            <p className="text-xs text-amber-800 mt-0.5">
+              Pelajari hak ulayat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
+            </p>
+          </div>
+          <Link
+            href="/edukasi"
+            className="ml-4 px-3 py-1.5 rounded-lg bg-amber-900 text-white text-xs font-semibold hover:bg-amber-950 flex-shrink-0 transition-colors"
+          >
+            Baca Panduan →
+          </Link>
+        </div>
+      </div>
+
+      {/* 4. Panel Filter & Pencarian */}
       <section id="daftar-klaim" aria-labelledby="judul-eksplorasi" className="mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -144,7 +190,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 4. Grid Kartu Klaim Responsif (1 col mobile, 2 col tablet, 3 col desktop) */}
+        {/* 5. Grid Kartu Klaim Responsif (1 col mobile, 2 col tablet, 3 col desktop) */}
         {filteredClaims.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredClaims.map((claim) => (

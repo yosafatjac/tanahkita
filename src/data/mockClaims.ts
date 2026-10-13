@@ -186,3 +186,6 @@ export const MOCK_CLAIMS: LandClaim[] = [
     catatanTetua: "Terdapat perbedaan klaim 50 meter di batas timur dengan Marga Tabuni. Mediasi adat dijadwalkan akhir bulan.",
   },
 ];
+
+export const mockClaims = MOCK_CLAIMS;
+

@@ -8,7 +8,7 @@
 
 ## 1. Alat yang Digunakan
 * **Alat Utama:** Google DeepMind Antigravity / Gemini & Claude
-* **Peran:** Asisten pair-programming untuk penyusunan arsitektur modular, formulasi kode kriptografis, dan verifikasi kepatuhan rubrik RPS.
+* **Peran:** Asisten pair-programming untuk penyusunan arsitektur modular, formulasi kode kriptografis, perancangan antarmuka Next.js/React, dan verifikasi kepatuhan rubrik RPS.
 
 ---
 
@@ -30,18 +30,33 @@
   - Memastikan tidak ada kunci privat atau secret hardcoded di dalam repositori.
 
 ### B. Pengembangan Antarmuka Web (Milestone 1 PAW)
-* **Tujuan:** Merancang antarmuka Next.js/React yang semantik, responsif, memiliki komponen reusable, serta validasi formulir sisi klien.
+* **Tujuan:** Merancang antarmuka Next.js/React yang semantik, responsif, memiliki komponen reusable, validasi formulir sisi klien, dan integrasi Web Crypto API.
 * **Ringkasan Perintah (Prompt):**
-  - "Rancang 3 halaman web (Beranda, Form Pendaftaran dengan validasi sisi klien, Detail Klaim dengan audit timeline) menggunakan React, TypeScript, dan Tailwind CSS bertema tanah ulayat Papua."
-  - "Implementasikan minimal 5 komponen reusable dengan aksesibilitas keyboard dan landmark ARIA."
+  - "Rancang antarmuka web modern dengan Next.js App Router di root repository agar mudah dijalankan (`npm run dev`), terdiri dari 5 halaman (Beranda, Form Pendaftaran dengan validasi sisi klien, Detail Klaim, Portal Uji Verifikasi Dokumen, Edukasi Hukum Adat) menggunakan React, TypeScript, dan Tailwind CSS bertema tanah ulayat Papua."
+  - "Implementasikan 8 komponen reusable termasuk modal interaktif penjelasan kriptografi dan modal uji sidik jari berkas."
 * **Bagian yang Dihasilkan / Dimodifikasi:**
-  - `web/src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`.
-  - `web/src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian dan filter status.
-  - `web/src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien (pesan error spesifik per kolom input).
-  - `web/src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat dan verifikasi hash-chain.
+  - `src/components/`: `Navbar`, `Footer`, `StatusBadge`, `ClaimCard`, `HashViewer`, `AuditTimeline`, `CryptoExplainerModal`, `VerifyProofModal`.
+  - `src/lib/crypto.ts`: Utilitas peramban Web Crypto API (`window.crypto.subtle.digest`) untuk hashing SHA-256 client-side tanpa reload.
+  - `src/app/page.tsx`: Halaman katalog eksplorasi klaim dengan pencarian, filter status, dan statistik.
+  - `src/app/daftar/page.tsx`: Formulir pendaftaran dengan validasi sisi klien dan kalkulasi live SHA-256 saat berkas diunggah.
+  - `src/app/klaim/[id]/page.tsx`: Halaman detail tanah ulayat, batas 4 penjuru, dan uji integritas rantai audit.
+  - `src/app/verifikasi/page.tsx`: Portal verifikasi dokumen mandiri dan simulator OTP musyawarah tetua adat.
+  - `src/app/edukasi/page.tsx`: Halaman landasan hukum adat Papua, penegasan non-BPN, dan matriks Hash vs Enkripsi vs Encoding.
 * **Cara Memeriksa / Verifikasi Mandiri:**
-  - Memeriksa kebenaran alur validasi formulir: memastikan tombol submit tidak dapat memproses jika kolom nama marga kosong atau luas wilayah bernilai negatif/nol.
+  - Memeriksa kebenaran alur validasi formulir: memastikan form menolak jika nama marga kosong atau luas lahan tidak positif.
+  - Menguji fungsi hashing sisi klien dengan mengunggah berkas di browser dan melihat kalkulasi SHA-256 secara langsung.
   - Memverifikasi hierarki judul semantik (`h1`, `h2`, `h3`) dan keberadaan landmark ARIA pada panel DevTools.
+
+### C. Analisis Ancaman dan Manajemen Risiko (Tugas 1 KKS)
+* **Tujuan:** Menyusun DFD Level 1, analisis ancaman STRIDE spesifik pada elemen DFD, dan register risiko dengan rencana kontrol mitigasi.
+* **Bagian yang Dihasilkan / Dimodifikasi:**
+  - `security/asset-inventory.md`: Inventarisasi 8 aset utama sistem.
+  - `security/dfd.md`: DFD Level 1 memuat elemen ID, 3 trust boundary, dan tanda kripto.
+  - `security/threat-model.md`: 10 ancaman spesifik berbasis STRIDE.
+  - `security/risk-register.md`: 5 risiko prioritas dan pemetaan kontrol ke Tugas 2/Tugas 3.
+* **Cara Memeriksa / Verifikasi Mandiri:**
+  - Memastikan tidak ada ancaman generik seperti "server diretas" atau "database dicuri".
+  - Memastikan seluruh alasan kemungkinan dan dampak merujuk pada kondisi operasional produk di Timika/Mimika.
 
 ---
 
