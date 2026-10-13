@@ -75,6 +75,26 @@ python3 -m unittest discover -s "Kriptografi/tests" -p "test_*.py" -v
 cd Kriptografi && python3 -m unittest discover -s tests -p "test_*.py" -v
 ```
 
+### Bukti Keluaran Eksekusi Terminal (Output):
+
+```text
+test_1_sha256_deterministic_and_avalanche (test_crypto.TestTanahKitaCrypto)
+Uji Positif: SHA-256 bersifat deterministik dan memiliki efek avalanche. ... ok
+test_2_document_tamper_detection_negative (test_crypto.TestTanahKitaCrypto)
+Uji Negatif: Manipulasi data 1 byte terdeteksi dan verifikasi mengembalikan False. ... ok
+test_3_csprng_token_uniqueness_and_entropy (test_crypto.TestTanahKitaCrypto)
+Uji Positif & Batas: Token verifikasi tetua adat berentropi tinggi dan bebas kolisi. ... ok
+test_4_hash_chain_integrity_valid (test_crypto.TestTanahKitaCrypto)
+Uji Positif: Rantai riwayat klaim tanah adat terverifikasi utuh dari genesis hingga akhir. ... ok
+test_5_hash_chain_tamper_detection_negative (test_crypto.TestTanahKitaCrypto)
+Uji Negatif: Manipulasi data riwayat di tengah rantai menyebabkan verifikasi GAGAL. ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+```
+
 ---
 
 ## 4. Skenario Uji dan Hasil (K4)
