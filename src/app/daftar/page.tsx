@@ -469,7 +469,7 @@ export default function DaftarKlaimPage() {
                   type="text"
                   value={formData.titikKoordinat}
                   onChange={handleInputChange}
-                  placeholder="Contoh: 4°25'12\"S 136°52'45\"E atau Patok Batu Sungai"
+                  placeholder={'Contoh: 4°25\'12"S 136°52\'45"E atau Patok Batu Kali Kopi'}
                   aria-invalid={!!errors.titikKoordinat}
                   aria-describedby={errors.titikKoordinat ? "error-titikKoordinat" : undefined}
                   className={`w-full px-3 py-2 text-xs rounded-lg border bg-white focus:outline-none focus:ring-2 ${
