@@ -87,8 +87,8 @@ TanahKita hadir sebagai platform pencatatan bukti tanah ulayat yang mengintegras
 ## 6. Petunjuk Menjalankan Proyek
 
 ```bash
-# Masuk ke direktori web
-cd web
+# Masuk ke direktori Pengembangan Aplikasi Web
+cd "Pengembangan Aplikasi Web"
 
 # Pasang dependensi
 npm install
