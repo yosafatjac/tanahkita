@@ -64,6 +64,18 @@ flowchart TD
     P3 -->|"DF17: Log Audit"| D4
     D2 -->|"DF18: Backup Rantai 🔐"| D5
     D6 -.->|"DF19: Secrets & Kunci 🔐"| P1
+
+    classDef clientClass fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0f172a;
+    classDef processClass fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b;
+    classDef storageClass fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f;
+
+    class E1,E2,E3 clientClass;
+    class P1,P2,P3,P4 processClass;
+    class D1,D2,D3,D4,D5,D6 storageClass;
+
+    style TB1 fill:#f8fafc,stroke:#64748b,stroke-width:2px,stroke-dasharray: 5 5;
+    style TB2 fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,stroke-dasharray: 5 5;
+    style TB3 fill:#fffbeb,stroke:#d97706,stroke-width:2px,stroke-dasharray: 5 5;
 ```
 
 ---
