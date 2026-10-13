@@ -4,7 +4,7 @@
   "private": true,
   "description": "Platform Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua (Kabupaten Mimika)",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
