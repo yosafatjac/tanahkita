@@ -23,7 +23,7 @@ Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capa
 
 ```text
 tanahkita/
-├── pengembangan-aplikasi-web/ <-- [Pengembangan Aplikasi Web / PAW] (Tag: v0.1)
+├── Pengembangan Aplikasi Web/ <-- [Pengembangan Aplikasi Web / PAW] (Tag: v0.1)
 │   ├── src/                   <-- Source code mandiri Next.js / TypeScript
 │   │   ├── app/               <-- 5 Halaman Aplikasi (Beranda, Daftar, Klaim, Verifikasi, Edukasi)
 │   │   ├── components/        <-- 8 Komponen Reusable UI
@@ -34,7 +34,7 @@ tanahkita/
 │   ├── tailwind.config.ts
 │   └── README.md              <-- Dokumentasi teknis lengkap Pemweb
 │
-├── kriptografi/               <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
+├── Kriptografi/               <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
 │   ├── src/                   <-- Source code mandiri Python
 │   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (hashlib & hmac)
 │   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (secrets)
@@ -43,7 +43,7 @@ tanahkita/
 │   │   └── test_crypto.py     <-- 5 Skenario Uji Unit Pytest/Unittest (Lolos 100%)
 │   └── README.md              <-- Matriks 3 Kebutuhan Perlindungan Data (K1-K5)
 │
-├── keamanan-komputasi-dan-siber/ <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1)
+├── Keamanan Komputasi dan Siber/ <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1)
 │   ├── asset-inventory.md     <-- Inventarisasi 8 aset & klasifikasi CIA
 │   ├── dfd.md                 <-- DFD Level 1 dengan ID elemen, 3 trust boundary, marker kripto
 │   ├── threat-model.md        <-- 10+ Ancaman STRIDE spesifik pada elemen DFD
@@ -93,7 +93,7 @@ Dapat dijalankan langsung dari root proyek menggunakan `npm` atau `python3`:
 npm run test:crypto
 
 # Atau langsung menggunakan Python standard library (tanpa dependensi luar):
-python3 -m unittest discover -s kriptografi/tests -p "test_*.py" -v
+python3 -m unittest discover -s "Kriptografi/tests" -p "test_*.py" -v
 ```
 
 Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**:

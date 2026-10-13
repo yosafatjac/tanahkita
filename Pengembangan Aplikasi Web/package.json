@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:crypto": "python3 -m unittest discover -s ../kriptografi/tests -p 'test_*.py' -v"
+    "test:crypto": "python3 -m unittest discover -s \"../Kriptografi/tests\" -p 'test_*.py' -v"
   },
   "dependencies": {
     "react": "^19.0.0",

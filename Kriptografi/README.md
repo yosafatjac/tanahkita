@@ -52,7 +52,7 @@ TanahKita dirancang untuk mencatat dan melindungi bukti penguasaan tanah bagi ma
 ## 3. Struktur Modul dan Cara Menjalankan (K3)
 
 ```text
-kriptografi/
+Kriptografi/
 ├── src/
 │   ├── __init__.py
 │   ├── hasher.py          <-- Fungsi hash bytes, berkas, dan verifikasi
@@ -69,10 +69,10 @@ Seluruh pengujian unit dapat dijalankan ulang dari root repositori:
 
 ```bash
 # Menjalankan dari root repositori:
-python3 -m unittest discover -s kriptografi/tests -p "test_*.py" -v
+python3 -m unittest discover -s "Kriptografi/tests" -p "test_*.py" -v
 
-# Atau dari dalam direktori kriptografi/:
-cd kriptografi && python3 -m unittest discover -s tests -p "test_*.py" -v
+# Atau dari dalam direktori Kriptografi/:
+cd Kriptografi && python3 -m unittest discover -s tests -p "test_*.py" -v
 ```
 
 ---
