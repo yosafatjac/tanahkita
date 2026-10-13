@@ -103,27 +103,52 @@ npm run dev
 
 ## 7. Bukti Tangkapan Layar Antarmuka & Validasi Formulir
 
-Sesuai ketentuan Milestone 1, berikut adalah dokumentasi visual antarmuka responsif dan validasi formulir sisi klien:
+Sesuai ketentuan Milestone 1, seluruh bukti visual antarmuka responsif dan validasi formulir sisi klien telah didokumentasikan dan disematkan langsung:
 
-### A. Tangkapan Layar Ponsel (Mobile — Lebar ≤ 640 px)
-Diuji langsung pada perangkat fisik iPhone (layar seluler) melalui Safari via jaringan Wi-Fi lokal:
+### A. Tangkapan Layar Ponsel (Mobile — Lebar ≤ 640 px / 360 px)
+Diuji langsung pada perangkat fisik iPhone & emulasi perangkat seluler melalui peramban via jaringan lokal:
 
 <div align="center">
-  <img src="screenshots/mobile.png" alt="Tampilan Antarmuka Mobile pada iPhone" width="320" />
+  <img src="screenshots/mobile.png" alt="Tampilan Antarmuka Ponsel (Mobile 360px - 390px)" width="320" />
+  <p><em>Gambar 1: Antarmuka Beranda pada Layar Ponsel (Mobile Responsive & Navigasi Vertikal)</em></p>
 </div>
 
-### B. Tangkapan Layar Tablet (Lebar 768 px) & Desktop (Lebar ≥ 1024 px)
-* **Tablet (iPad Mini 768 px):** Tersimpan pada `screenshots/tablet.png`
-* **Desktop (Resolusi 1280+ px):** Tersimpan pada `screenshots/desktop.png`
+### B. Tangkapan Layar Tablet (Lebar 768 px — Emulasi iPad Mini)
+Antarmuka menyesuaikan dengan layout grid 2 kolom yang proporsional untuk perangkat tablet:
 
-### C. Bukti Validasi Formulir Sisi Klien (`/daftar`)
-* **Pesan Kesalahan Masukan:** Tersimpan pada `screenshots/form-validation.png`
+<div align="center">
+  <img src="screenshots/tablet.png" alt="Tampilan Antarmuka Tablet (768 px)" width="640" />
+  <p><em>Gambar 2: Antarmuka pada Layar Tablet (768 px — Grid 2 Kolom)</em></p>
+</div>
+
+### C. Tangkapan Layar Desktop (Lebar ≥ 1024 px / 1280 px)
+Tampilan penuh pada peramban komputer desktop dengan grid 3 kolom dan panel navigasi horizontal:
+
+<div align="center">
+  <img src="screenshots/desktop.png" alt="Tampilan Antarmuka Desktop (1280 px)" width="800" />
+  <p><em>Gambar 3: Antarmuka pada Layar Desktop (1280 px — Grid 3 Kolom Penuh)</em></p>
+</div>
+
+### D. Bukti Validasi Formulir Sisi Klien (`/daftar`)
+Membuktikan mekanisme *client-side validation* bekerja seketika saat pengguna menekan tombol kirim tanpa mengisi kolom wajib:
+
+<div align="center">
+  <img src="screenshots/form-validation.png" alt="Bukti Validasi Formulir Sisi Klien" width="800" />
+  <p><em>Gambar 4: Pesan Kesalahan Validasi Sisi Klien Berwarna Merah dan Beraksesibilitas role='alert'</em></p>
+</div>
 
 ---
 
 ## 8. Laporan Audit Aksesibilitas (Lighthouse)
 
-Audit aksesibilitas dilakukan menggunakan Google Chrome DevTools Lighthouse pada seluruh halaman:
-* **Skor Aksesibilitas:** **98 / 100** (Melampaui target minimum $\ge 85$).
-* **Laporan Lengkap & Kondisi Pengujian:** Tersedia pada berkas `../docs/lighthouse-report.md`.
+Audit aksesibilitas dijalankan menggunakan Google Chrome DevTools Lighthouse pada seluruh rute aplikasi:
+* **Skor Aksesibilitas Rata-Rata:** **98 / 100** (Melampaui standar minimal kelulusan $\ge 85$).
+* **Kepatuhan Standar:** WCAG 2.2 Level AA (Rasio kontras warna $\ge 4.5:1$, elemen semantik HTML5, ARIA label, dan navigasi ramah pembaca layar).
+* **Laporan Lengkap & Kondisi Pengujian:** Tersedia pada berkas [lighthouse-report.md](../docs/lighthouse-report.md).
+
+<div align="center">
+  <img src="screenshots/lighthouse-score.png" alt="Bukti Audit Lighthouse Aksesibilitas Skor 98/100" width="800" />
+  <p><em>Gambar 5: Hasil Audit Lighthouse Chrome DevTools dengan Skor Aksesibilitas 98 (Hijau)</em></p>
+</div>
+
 
