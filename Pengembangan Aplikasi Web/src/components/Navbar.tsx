@@ -1,8 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Link from "next/link";
 import CryptoExplainerModal from "@/components/CryptoExplainerModal";
+import TautanNav, { type Tautan } from "@/components/TautanNav";
+
+const TAUTAN_UTAMA: Tautan[] = [
+  { href: "/", label: "Beranda" },
+  { href: "/katalog", label: "Katalog [id]" },
+  { href: "/tentang", label: "Tentang" },
+  { href: "/verifikasi", label: "Uji Hash" },
+  { href: "/edukasi", label: "Hukum & Kripto" },
+];
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -61,24 +70,9 @@ export default function Navbar() {
               aria-label="Navigasi Utama"
               className="hidden md:flex items-center space-x-1 lg:space-x-2"
             >
-              <Link
-                href="/"
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-amber-900/60 hover:text-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors"
-              >
-                Eksplorasi Klaim
-              </Link>
-              <Link
-                href="/verifikasi"
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-amber-900/60 hover:text-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors"
-              >
-                Uji Hash Dokumen
-              </Link>
-              <Link
-                href="/edukasi"
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-amber-900/60 hover:text-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors"
-              >
-                Hukum & Kriptografi
-              </Link>
+              <Suspense fallback={null}>
+                <TautanNav tautan={TAUTAN_UTAMA} />
+              </Suspense>
 
               {/* Tombol Edukasi Kripto Modal */}
               <button
@@ -141,28 +135,13 @@ export default function Navbar() {
 
         {/* Panel Menu Mobile */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-amber-900 bg-amber-950 px-4 pt-2 pb-4 space-y-1">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-amber-900 hover:text-amber-200 text-stone-100"
-            >
-              Eksplorasi Klaim
-            </Link>
-            <Link
-              href="/verifikasi"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-amber-900 hover:text-amber-200 text-stone-100"
-            >
-              Uji Hash Dokumen
-            </Link>
-            <Link
-              href="/edukasi"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-amber-900 hover:text-amber-200 text-stone-100"
-            >
-              Hukum & Kriptografi
-            </Link>
+          <div className="md:hidden border-t border-amber-900 bg-amber-950 px-4 pt-2 pb-4 space-y-2">
+            <Suspense fallback={null}>
+              <TautanNav
+                tautan={TAUTAN_UTAMA}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
+            </Suspense>
             <div className="pt-2">
               <Link
                 href="/daftar"
