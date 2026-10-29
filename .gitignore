@@ -21,8 +21,10 @@ htmlcov/
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 *.pem
 *.key
+*.tsbuildinfo
 
 # Operating System
 .DS_Store

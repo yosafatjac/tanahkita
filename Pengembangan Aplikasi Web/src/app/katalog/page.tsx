@@ -51,9 +51,24 @@ export default function KatalogIndexPage() {
           Portal Berkas Ulayat Terproteksi
         </h1>
 
-        <p className="text-xs sm:text-sm text-stone-300 leading-relaxed max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-stone-300 leading-relaxed max-w-xl mx-auto mb-6">
           Sesuai norma hukum adat Papua, <strong>tidak ada daftar tanah orang lain yang ditampilkan atau direkomendasikan</strong>. Anda hanya dapat membuka berkas tanah ulayat milik marga Anda jika mengetahui <strong>Nomor Registrasi Kunci ID</strong> yang sah.
         </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/katalog/tambah"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-stone-950 transition-colors shadow-md"
+          >
+            <span>+ Daftarkan Wilayah Ulayat Baru</span>
+          </Link>
+          <Link
+            href="/masuk"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-stone-800/80 hover:bg-stone-800 text-amber-200 border border-amber-600/30 transition-colors"
+          >
+            <span>🔑 Masuk Sesi Tetua</span>
+          </Link>
+        </div>
       </section>
 
       {/* Form Input Akses Rahasia (Client Component) */}

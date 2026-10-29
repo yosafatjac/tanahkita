@@ -124,3 +124,58 @@ export const MOCK_KATALOG: KatalogItem[] = [
 export function cariItem(id: string): KatalogItem | undefined {
   return MOCK_KATALOG.find((item) => item.id.toLowerCase() === id.toLowerCase());
 }
+
+export function cekNamaDuplikat(nama: string): boolean {
+  const normal = nama.trim().toLowerCase();
+  return MOCK_KATALOG.some((item) => item.nama.trim().toLowerCase() === normal);
+}
+
+export function tambahKatalogItem(input: {
+  nama: string;
+  kategori: KatalogItem["kategori"];
+  distrik: string;
+  kampung: string;
+  luasHektar: number;
+  margaPengelola: string;
+  deskripsi: string;
+  titikKoordinat: string;
+}): KatalogItem {
+  const nomorBaru = MOCK_KATALOG.length + 1;
+  const idBaru = `ktl-${String(nomorBaru).padStart(3, "0")}`;
+  const kodeArsip = `KAT-MMK-${String(nomorBaru).padStart(2, "0")}`;
+  const tanggalHariIni = new Date().toISOString().split("T")[0];
+
+  // Buat hash mock representasi sha256
+  const hashSeed = `${idBaru}-${input.nama}-${input.luasHektar}-${tanggalHariIni}`;
+  let hashMock = "";
+  for (let i = 0; i < 64; i++) {
+    hashMock += ((hashSeed.charCodeAt(i % hashSeed.length) * (i + 13)) % 16).toString(16);
+  }
+
+  const itemBaru: KatalogItem = {
+    id: idBaru,
+    kodeArsip,
+    nama: input.nama,
+    kategori: input.kategori,
+    distrik: input.distrik,
+    kampung: input.kampung,
+    luasHektar: input.luasHektar,
+    margaPengelola: input.margaPengelola,
+    statusVerifikasi: "Arsip Baru",
+    deskripsi: input.deskripsi,
+    titikKoordinat: input.titikKoordinat,
+    patokBatas: {
+      utara: "Batas Adat Sisi Utara (Dalam Peninjauan)",
+      selatan: "Batas Adat Sisi Selatan (Dalam Peninjauan)",
+      timur: "Batas Adat Sisi Timur (Dalam Peninjauan)",
+      barat: "Batas Adat Sisi Barat (Dalam Peninjauan)",
+    },
+    hashArsip: hashMock,
+    tanggalPencatatan: tanggalHariIni,
+    jumlahDokumen: 1,
+  };
+
+  MOCK_KATALOG.unshift(itemBaru);
+  return itemBaru;
+}
+
