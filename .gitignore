@@ -8,6 +8,8 @@ node_modules/
 out/
 build/
 dist/
+generated/
+/generated/prisma
 __pycache__/
 *.py[cod]
 *$py.class
