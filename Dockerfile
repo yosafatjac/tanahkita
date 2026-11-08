@@ -8,7 +8,7 @@
 # =============================================================================
 
 # Stage 1: Install production & build dependencies cleanly
-FROM node:22-alpine3.21@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227 AS deps
+FROM node:25-alpine3.21@sha256:32509199057d74a987fdd88cde00fdfd48ef52469adbd6bd11969fc701477761 AS deps
 WORKDIR "/app/Pengembangan Aplikasi Web"
 
 # Install patched OS security updates in Alpine
@@ -18,7 +18,7 @@ COPY ["Pengembangan Aplikasi Web/package.json", "Pengembangan Aplikasi Web/packa
 RUN npm ci --ignore-scripts
 
 # Stage 2: Generate Prisma Client & build Next.js production bundle
-FROM node:22-alpine3.21@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227 AS builder
+FROM node:25-alpine3.21@sha256:32509199057d74a987fdd88cde00fdfd48ef52469adbd6bd11969fc701477761 AS builder
 WORKDIR "/app/Pengembangan Aplikasi Web"
 
 COPY --from=deps ["/app/Pengembangan Aplikasi Web/node_modules", "./node_modules"]
@@ -28,7 +28,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN npx prisma generate && npm run build
 
 # Stage 3: Minimal, hardened production runner (non-root UID 1001:1001)
-FROM node:22-alpine3.21@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227 AS runner
+FROM node:25-alpine3.21@sha256:32509199057d74a987fdd88cde00fdfd48ef52469adbd6bd11969fc701477761 AS runner
 WORKDIR "/app/Pengembangan Aplikasi Web"
 
 ENV NODE_ENV=production
