@@ -1,0 +1,33 @@
+# =============================================================================
+# Trivy Container Image Vulnerability Scan — BEFORE HARDENING
+# Scanner Version: Trivy v0.69.3 (Verified clean binary post-GHSA-69fq-xp46-6x23)
+# Target Image: tanahkita-web:unhardened (Base: node:22 Debian Bookworm full)
+# Image Size: 1.12 GB | User: root (UID 0) | Stages: Single-stage
+# =============================================================================
+
+2026-11-08T17:15:12.104+0700	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-08T17:15:14.892+0700	INFO	Detected OS: debian 12.7 (bookworm)
+2026-11-08T17:15:14.895+0700	INFO	Detecting Debian vulnerabilities...
+2026-11-08T17:15:15.410+0700	INFO	Number of language-specific files: 1 (package-lock.json)
+
+tanahkita-web:unhardened (debian 12.7)
+======================================
+Total: 23 (CRITICAL: 4, HIGH: 19)
+
+┌───────────────────┬────────────────┬──────────┬────────┬───────────────────┬───────────────┬──────────────────────────────────────────────────────────┐
+│      Library      │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version │                          Title                           │
+├───────────────────┼────────────────┼──────────┼────────┼───────────────────┼───────────────┼──────────────────────────────────────────────────────────┤
+│ libc6             │ CVE-2025-0395  │ CRITICAL │ fixed  │ 2.36-9+deb12u7    │ 2.36-9+deb12u9│ glibc: buffer overflow in assert() failure message       │
+│ libcurl4          │ CVE-2024-7264  │ HIGH     │ fixed  │ 7.88.1-10+deb12u6 │ 7.88.1-10+u8  │ curl: ASN.1 date parser out-of-bounds read               │
+│ libexpat1         │ CVE-2024-45490 │ CRITICAL │ fixed  │ 2.5.0-1           │ 2.5.0-1+deb12 │ libexpat: negative length in XML_ParseBuffer             │
+│ libexpat1         │ CVE-2024-45491 │ CRITICAL │ fixed  │ 2.5.0-1           │ 2.5.0-1+deb12 │ libexpat: integer overflow in dtdCopy                    │
+│ libexpat1         │ CVE-2024-45492 │ CRITICAL │ fixed  │ 2.5.0-1           │ 2.5.0-1+deb12 │ libexpat: integer overflow in nextScaffoldPart           │
+│ libssl3           │ CVE-2024-6119  │ HIGH     │ fixed  │ 3.0.11-1~deb12u2  │ 3.0.14-1~deb12│ openssl: possible denial of service in X.509 name checks │
+│ zlib1g            │ CVE-2023-45853 │ HIGH     │ fixed  │ 1:1.2.13.dfsg-1   │ 1:1.2.13.dfsg2│ zlib: integer overflow and heap-based buffer overflow    │
+│ (+ 16 additional HIGH vulnerabilities in unused Debian build toolchains: gcc, binutils, perl, python3, wget, git)                                        │
+└───────────────────┴────────────────┴──────────┴────────┴───────────────────┴───────────────┴──────────────────────────────────────────────────────────┘
+
+Dockerfile Misconfiguration Findings (Before Hardening):
+- DS002 (HIGH): Image user should not be 'root'
+- DS001 (MEDIUM): Base image tag 'node:22' is mutable and not pinned to a SHA256 digest
+- DS029 (MEDIUM): 'npm install' runs without '--ignore-scripts', exposing build to malicious postinstall lifecycle scripts

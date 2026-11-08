@@ -1,12 +1,25 @@
 import React from "react";
 import Link from "next/link";
 import { MOCK_CLAIMS } from "@/data/mockClaims";
+import { ambilDaftarItem } from "@/lib/data";
 import RingkasanArsip from "@/components/RingkasanArsip";
 import EksplorasiKlaim from "@/components/EksplorasiKlaim";
 
-export default function HomePage() {
-  const totalLuas = MOCK_CLAIMS.reduce((acc, curr) => acc + curr.luasHektar, 0);
-  const totalVerified = MOCK_CLAIMS.filter((c) => c.status === "TERVERIFIKASI_ADAT").length;
+export default async function HomePage() {
+  let totalKlaim = MOCK_CLAIMS.length;
+  let totalLuas = MOCK_CLAIMS.reduce((acc, curr) => acc + curr.luasHektar, 0);
+  let totalVerified = MOCK_CLAIMS.filter((c) => c.status === "TERVERIFIKASI_ADAT").length;
+
+  try {
+    const daftarDb = await ambilDaftarItem();
+    if (daftarDb.length > 0) {
+      totalKlaim = daftarDb.length;
+      totalLuas = daftarDb.reduce((acc, curr) => acc + curr.luasHektar, 0);
+      totalVerified = daftarDb.filter((c) => c.tersedia).length;
+    }
+  } catch {
+    // Gunakan fallback MOCK_CLAIMS apabila DB sedang luring
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -58,11 +71,11 @@ export default function HomePage() {
         <h2 id="judul-statistik" className="sr-only">Statistik Ringkasan Klaim</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm">
-            <span className="text-xs text-stone-500 font-medium block">Total Klaim Terdaftar</span>
+            <span className="text-xs text-stone-500 font-medium block">Total Klaim Terdaftar (PostgreSQL)</span>
             <div className="text-2xl sm:text-3xl font-extrabold text-stone-900 mt-1">
-              {MOCK_CLAIMS.length} <span className="text-xs font-normal text-stone-400">Klaim Marga</span>
+              {totalKlaim} <span className="text-xs font-normal text-stone-400">Klaim Marga</span>
             </div>
-            <p className="text-[11px] text-stone-500 mt-1">Tersebar di 4 distrik Kabupaten Mimika</p>
+            <p className="text-[11px] text-stone-500 mt-1">Tersebar di distrik Kabupaten Mimika</p>
           </div>
 
           <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm">
@@ -76,7 +89,7 @@ export default function HomePage() {
           <div className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm">
             <span className="text-xs text-stone-500 font-medium block">Tervalidasi Tetua Adat</span>
             <div className="text-2xl sm:text-3xl font-extrabold text-emerald-800 mt-1">
-              {totalVerified} <span className="text-xs font-normal text-stone-400">dari {MOCK_CLAIMS.length} Klaim</span>
+              {totalVerified} <span className="text-xs font-normal text-stone-400">dari {totalKlaim} Klaim</span>
             </div>
             <p className="text-[11px] text-stone-500 mt-1">Memiliki jejak bukti kesepakatan sah</p>
           </div>

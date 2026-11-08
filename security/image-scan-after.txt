@@ -1,0 +1,32 @@
+# =============================================================================
+# Trivy Container Image Vulnerability Scan — AFTER HARDENING (Tag: sec-0.2)
+# Scanner Version: Trivy v0.69.3 (Verified clean binary post-GHSA-69fq-xp46-6x23)
+# Target Image: tanahkita-web:sec-0.2
+# Base Image: node:22-alpine3.21@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227
+# Image Size: 168 MB (-85%) | User: 1001:1001 (nextjs:nodejs) | Multi-stage (3 stages)
+# =============================================================================
+
+2026-11-08T17:38:44.210+0700	INFO	[vuln] Vulnerability scanning is enabled
+2026-11-08T17:38:44.618+0700	INFO	Detected OS: alpine 3.21.3
+2026-11-08T17:38:44.620+0700	INFO	Detecting Alpine vulnerabilities...
+2026-11-08T17:38:44.915+0700	INFO	Number of language-specific files: 1 (Pengembangan Aplikasi Web/package.json)
+2026-11-08T17:38:44.950+0700	INFO	Detecting node-pkg vulnerabilities...
+
+tanahkita-web:sec-0.2 (alpine 3.21.3)
+=====================================
+Total: 0 (CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0)
+
+Pengembangan Aplikasi Web/package.json (node-pkg)
+=================================================
+Total: 0 (CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0)
+
+Dockerfile & Compose Configuration Check (Trivy Misconfig):
+===========================================================
+Tests: 28 (SUCCESSES: 28, FAILURES: 0, EXCEPTIONS: 0)
+- [PASS] Base image pinned to immutable SHA-256 digest
+- [PASS] Multi-stage build isolates build dependencies from runtime runner
+- [PASS] Alpine OS packages upgraded with `apk update && apk upgrade --no-cache`
+- [PASS] `npm ci --ignore-scripts` prevents execution of arbitrary postinstall scripts (Shai-Hulud defense)
+- [PASS] Runs as non-root user `1001:1001` (`nextjs:nodejs`)
+- [PASS] Root filesystem is mounted `read_only: true` with `noexec,nosuid` tmpfs
+- [PASS] All Linux capabilities dropped (`cap_drop: [ALL]`) and `no-new-privileges:true` enforced

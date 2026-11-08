@@ -40,7 +40,7 @@ export default function FormUlasan({ itemId }: FormUlasanProps) {
         </div>
       )}
 
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} noValidate className="space-y-4">
         <div>
           <label className="block text-xs font-semibold text-stone-700 mb-1">
             Nama Saksi / Pengulas

@@ -1,0 +1,155 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:7f9c4e12-8b3a-4d65-9e01-2c5f8a3d91b4",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-08T10:45:00Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "author": "Aqua Security",
+          "name": "trivy",
+          "version": "0.69.3"
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "Yosafat Jacobus",
+        "email": "105224016@student.universitaspertamina.ac.id"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:generic/tanahkita@0.2.0",
+      "name": "tanahkita",
+      "version": "0.2.0",
+      "description": "Platform Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua (PAW v0.2, Kriptografi v0.2, KKS sec-0.2)"
+    }
+  },
+  "components": [
+    {
+      "type": "container",
+      "bom-ref": "pkg:oci/node@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227",
+      "name": "node",
+      "version": "22-alpine3.21",
+      "purl": "pkg:oci/node@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/next@15.1.0",
+      "name": "next",
+      "version": "15.1.0",
+      "purl": "pkg:npm/next@15.1.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react@19.0.0",
+      "name": "react",
+      "version": "19.0.0",
+      "purl": "pkg:npm/react@19.0.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/react-dom@19.0.0",
+      "name": "react-dom",
+      "version": "19.0.0",
+      "purl": "pkg:npm/react-dom@19.0.0",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40prisma/client@7.10.1",
+      "name": "@prisma/client",
+      "version": "7.10.1",
+      "purl": "pkg:npm/%40prisma/client@7.10.1",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40prisma/adapter-pg@7.10.1",
+      "name": "@prisma/adapter-pg",
+      "version": "7.10.1",
+      "purl": "pkg:npm/%40prisma/adapter-pg@7.10.1",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/prisma@7.10.1",
+      "name": "prisma",
+      "version": "7.10.1",
+      "purl": "pkg:npm/prisma@7.10.1",
+      "scope": "optional"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/pg@8.23.1",
+      "name": "pg",
+      "version": "8.23.1",
+      "purl": "pkg:npm/pg@8.23.1",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/zod@4.6.7",
+      "name": "zod",
+      "version": "4.6.7",
+      "purl": "pkg:npm/zod@4.6.7",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/dotenv@18.0.9",
+      "name": "dotenv",
+      "version": "18.0.9",
+      "purl": "pkg:npm/dotenv@18.0.9",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/server-only@0.0.1",
+      "name": "server-only",
+      "version": "0.0.1",
+      "purl": "pkg:npm/server-only@0.0.1",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/cryptography@50.0.2",
+      "name": "cryptography",
+      "version": "50.0.2",
+      "purl": "pkg:pypi/cryptography@50.0.2",
+      "scope": "required"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:pypi/pytest@8.4.2",
+      "name": "pytest",
+      "version": "8.4.2",
+      "purl": "pkg:pypi/pytest@8.4.2",
+      "scope": "optional"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:generic/tanahkita@0.2.0",
+      "dependsOn": [
+        "pkg:oci/node@sha256:92d5f72b1086942a22ff26770a764c00557e630ca27b4b8fffa1c0121916f227",
+        "pkg:npm/next@15.1.0",
+        "pkg:npm/react@19.0.0",
+        "pkg:npm/react-dom@19.0.0",
+        "pkg:npm/%40prisma/client@7.10.1",
+        "pkg:npm/%40prisma/adapter-pg@7.10.1",
+        "pkg:npm/pg@8.23.1",
+        "pkg:npm/zod@4.6.7",
+        "pkg:npm/dotenv@18.0.9",
+        "pkg:npm/server-only@0.0.1",
+        "pkg:pypi/cryptography@50.0.2"
+      ]
+    }
+  ]
+}

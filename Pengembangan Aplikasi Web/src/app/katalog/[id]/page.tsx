@@ -6,6 +6,7 @@ import { hapusItem } from "@/app/katalog/actions";
 import { hapusUlasan } from "@/app/katalog/ulasan-actions";
 import FormUlasan from "@/components/FormUlasan";
 import FormUbahItem from "@/components/FormUbahItem";
+import FormUbahUlasan from "@/components/FormUbahUlasan";
 
 interface DetailItemProps {
   params: Promise<{ id: string }>;
@@ -121,12 +122,19 @@ export default async function DetailItem({ params }: DetailItemProps) {
                 key={u.id}
                 className="rounded-2xl border border-stone-200 bg-stone-50/50 p-4 flex flex-col sm:flex-row sm:items-start justify-between gap-3"
               >
-                <div>
+                <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-bold text-sm text-stone-900">{u.nama}</span>
                     <span className="text-amber-600 font-semibold text-xs">★ {u.nilai}/5</span>
                   </div>
                   <p className="text-xs text-stone-600 leading-relaxed">{u.komentar}</p>
+                  <FormUbahUlasan
+                    id={u.id}
+                    itemId={item.id}
+                    namaPengulas={u.nama}
+                    nilaiAwal={u.nilai}
+                    komentarAwal={u.komentar}
+                  />
                 </div>
 
                 <form action={hapusUlasan.bind(null, u.id, item.id)}>

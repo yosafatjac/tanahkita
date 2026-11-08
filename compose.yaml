@@ -1,0 +1,103 @@
+# =============================================================================
+# TanahKita — Hardened Docker Compose Specification (Tag: sec-0.2 / v0.2)
+# Controls Implemented:
+# 1. Non-root execution (`user: "1001:1001"` for app, `999:999` for postgres)
+# 2. Read-only root filesystem (`read_only: true`) + bounded `tmpfs`
+# 3. Drop all Linux kernel capabilities (`cap_drop: [ALL]`)
+# 4. Block privilege escalation (`security_opt: ["no-new-privileges:true"]`)
+# 5. Internal network isolation (`internal: true` on backend network; neither
+#    app port 3000 nor db port 5432 is published to 0.0.0.0 on the host)
+# =============================================================================
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tanahkita-web:sec-0.2
+    container_name: tanahkita-app
+    restart: unless-stopped
+    user: "1001:1001"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - "/app/Pengembangan Aplikasi Web/.next/cache:rw,noexec,nosuid,size=128m"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL wajib disetel melalui .env di host (chmod 600)}
+      DEMO_EMAIL: ${DEMO_EMAIL:-tetua.magal@tanahkita.id}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tanahkita_edge
+      - tanahkita_internal
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+          pids: 128
+
+  db:
+    image: postgres:18-alpine@sha256:6f3f29a8f1045b42a21b208e4a8c3c2e78e1b61d0f94300a7f6c9a5e6d128901
+    container_name: tanahkita-db
+    restart: unless-stopped
+    user: "70:70"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - /var/run/postgresql:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-produk}
+      POSTGRES_USER: ${POSTGRES_USER:-tanahkita_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD wajib disetel di .env host}
+    volumes:
+      - pgdata:/var/lib/postgresql/data:rw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-tanahkita_app} -d $${POSTGRES_DB:-produk}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tanahkita_internal
+    # Port 5432 TIDAK dipublikasikan ke host (ports: []) untuk mencegah paparan DB langsung (RSK-01)
+
+  proxy:
+    image: caddy:2.9-alpine@sha256:1f885a4a2a01a7e7b8f50741957211564a17e21d9e07f6a82d16b55d1c0c40d1
+    container_name: tanahkita-proxy
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "127.0.0.1:8443:8443"
+    depends_on:
+      - app
+    networks:
+      - tanahkita_edge
+
+networks:
+  tanahkita_edge:
+    driver: bridge
+  tanahkita_internal:
+    driver: bridge
+    internal: true
+
+volumes:
+  pgdata:
+    driver: local

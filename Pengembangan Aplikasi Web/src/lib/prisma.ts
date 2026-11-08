@@ -2,19 +2,19 @@ import "server-only";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
-const globalUntukPrisma = globalThis as unknown as {
-  prisma?: PrismaClient;
-};
+const g = globalThis as unknown as { prisma?: PrismaClient };
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
 
-function buatClient() {
-  const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL!,
+export const prisma =
+  g.prisma ??
+  new PrismaClient({
+    adapter,
+    // Modul 7: tampilkan setiap query SQL di terminal.
+    // Hapus "query" setelah praktikum agar log tidak terlalu ramai.
+    log: ["query", "warn", "error"],
   });
-  return new PrismaClient({ adapter });
-}
 
-export const prisma = globalUntukPrisma.prisma ?? buatClient();
+if (process.env.NODE_ENV !== "production") g.prisma = prisma;
 
-if (process.env.NODE_ENV !== "production") {
-  globalUntukPrisma.prisma = prisma;
-}

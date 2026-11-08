@@ -1,9 +1,101 @@
-# Antarmuka Produk Web Responsif dan Aksesibel — TanahKita
+# Antarmuka Produk Web Responsif, Aksesibel, & Berbasis Basis Data — TanahKita
 
 **Produk:** TanahKita (Sistem Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua)  
 **Pengembang:** Yosafat Jacobus (NIM: 105224016)  
-**Mata Kuliah:** Pengembangan Aplikasi Web (CS5) — Tugas 1 / Milestone 1  
-**Milestone Tag:** `v0.1`  
+**Mata Kuliah:** Pengembangan Aplikasi Web (CS5) — Milestone 1 (`v0.1`) & Milestone 2 (`v0.2`)  
+**Milestone Tag:** `v0.1` & `v0.2`  
+
+---
+
+## Pembaruan Milestone 2 (`v0.2`) — Integrasi PostgreSQL 18, Prisma ORM 7, CRUD Penuh 2 Entitas, Validasi Server Zod 4, & Sesi RBAC
+
+Pada Milestone 2 (`v0.2`), aplikasi web **TanahKita** telah ditingkatkan dari data statis (*mock*) menjadi aplikasi *full-stack* berbasis basis data relasional **PostgreSQL 18** dan **Prisma ORM 7** (`@prisma/adapter-pg`). Dokumentasi teknis lengkap beserta diagram ERD dan bukti 12 skenario uji tersedia pada **[`../docs/web-milestone-2.md`](../docs/web-milestone-2.md)**.
+
+### Perintah Penyiapan & Pengujian Milestone 2 (`v0.2`)
+
+```bash
+cd "Pengembangan Aplikasi Web"
+
+# 1. Salin berkas environment (.env dikecualikan di .gitignore)
+cp .env.example .env
+
+# 2. Jalankan migrasi skema Prisma ke PostgreSQL 18
+npx prisma migrate dev --name init
+
+# 3. Bangkitkan Prisma Client TypeScript
+npx prisma generate
+
+# 4. Isi data awal (seed) 8 wilayah ulayat Mimika + ulasan saksi batas adat
+npx prisma db seed
+
+# 5. Jalankan 12 skenario uji otomatis CRUD 2 entitas, relasi, transaksi, & validasi Zod
+npm run test:paw
+
+# 6. Jalankan server pengembangan
+npm run dev
+```
+
+### Ringkasan Pencapaian Teknis Milestone 2 (`v0.2`)
+1. **Skema Relasional 2 Entitas (`prisma/schema.prisma`):**
+   - Entitas Induk **`Item`** (Wilayah Ulayat) dan Entitas Anak **`Ulasan`** (Kesaksian Saksi Batas Adat) dengan relasi `1-ke-N`, tipe enum `KategoriUlayat`, kendala `@unique` pada `Item.judul`, dan kendala komposit `@@unique([itemId, nama])` pada `Ulasan`.
+2. **Operasi CRUD Lengkap pada Kedua Entitas (8 Operasi CRUD):**
+   - **`Item`:** Create (`simpanUlayatAction` / `tambahItem`), Read (`ambilDaftarItem` / `ambilItem` + penanganan `notFound()` 404), Update (`ubahItem` via `FormUbahItem.tsx`), Delete (`hapusItem` secara atomik dengan `prisma.$transaction`).
+   - **`Ulasan`:** Create (`tambahUlasan` via `FormUlasan.tsx`), Read (termuat berelasi di `/katalog/[id]`, `/katalog`, dan `/`), Update (`ubahUlasan` via `FormUbahUlasan.tsx`), Delete (`hapusUlasan`).
+3. **Validasi Sisi Server (Zod 4 `safeParse` & `z.flattenError`):**
+   - Diterapkan pada `ulayatSchema`, `skemaUlasan`, `skemaUbahUlasan`, dan `loginSchema` sebelum menyentuh basis data, dilengkapi `useActionState`, `aria-invalid`, dan `aria-describedby`.
+4. **Sesi Cookie `HttpOnly`, RBAC 3 Peran, & Kata Sandi Lambat (`scrypt` + NIST SP 800-63B-4):**
+   - Mendukung 3 peran (`Tetua Adat`, `Verifikator Adat`, `Pemohon Adat`), perlindungan BOLA/BFLA, hash lambat `scrypt` dengan salt CSPRNG 16-byte unik (`src/lib/password-hash.ts`), panjang minimal 15 karakter, *compromised password blocklist*, dan *rate limiting* (maksimal 3 gagal per 10 detik).
+
+### Tabel 12 Skenario Pengujian Milestone 2 (`v0.2`) — 8 CRUD, Relasi 1:N, Transaksi Rollback, & 3 Validasi Server
+
+| No | Tujuan Pengujian | Langkah Pengujian | Hasil yang Diharapkan | Hasil Aktual (PostgreSQL 18 / Zod 4) | Status |
+| :---: | :--- | :--- | :--- | :--- | :---: |
+| **1** | **CRUD #1 (`Item` — Create)** | Mengirim data sintetis wilayah ulayat sah melalui `simpanUlayatAction` / `prisma.item.create` | Baris baru tersimpan permanen di tabel `Item` PostgreSQL dengan `id` auto-increment | Baris `Item` berhasil disimpan ke PostgreSQL (`ID: 17`, `judul: "Kawasan Adat Hutan Sagu Tipuka..."`) | **LULUS** |
+| **2** | **CRUD #2 (`Item` — Read & 404)** | Memanggil `ambilItem(testItemId)` untuk ID sah dan `ambilItem(999999)` untuk ID fiktif | ID sah mengembalikan objek `Item` lengkap; ID fiktif mengembalikan `null` $\rightarrow$ `notFound()` 404 | Data `Item` ID 17 terbaca utuh dari PostgreSQL; ID fiktif `999999` mengembalikan `null` $\rightarrow$ `notFound()` 404 | **LULUS** |
+| **3** | **CRUD #3 (`Item` — Update)** | Membuka `FormUbahItem` di `/katalog/[id]`, mengubah `deskripsi` & `tersedia: false`, lalu memanggil `ubahItem` | Kolom `deskripsi` dan `tersedia` pada baris `Item` di PostgreSQL terbarui | `Item` ID 17 berhasil diupdate di PostgreSQL (`deskripsi` baru tersimpan dan `tersedia: false`) | **LULUS** |
+| **4** | **CRUD #4 (`Ulasan` — Create)** | Mengisi `FormUlasan` (`nama: "Saksi Marga Beanal"`, `nilai: 4`, `komentar`) dan memanggil `tambahUlasan` | Baris `Ulasan` baru tersimpan di PostgreSQL terhubung ke `itemId` | Baris `Ulasan` berhasil disimpan ke PostgreSQL (`ID: 17`, `nama: "Saksi Marga Beanal"`, `nilai: 4/5`) | **LULUS** |
+| **5** | **CRUD #5 (`Ulasan` — Read) & Relasi #1 (1:N)** | Memuat `/katalog/[id]` yang memanggil `findUnique({ include: { ulasan: true } })` | Seluruh daftar `Ulasan` milik `Item` terambil secara berelasi `1:N` | Relasi `1:N` `Item -> Ulasan` terverifikasi: ditemukan 1 ulasan milik `"Saksi Marga Beanal"` | **LULUS** |
+| **6** | **CRUD #6 (`Ulasan` — Update)** | Membuka `FormUbahUlasan` di `/katalog/[id]`, mengubah `nilai` ke `5` & `komentar`, lalu memanggil `ubahUlasan` | Baris `Ulasan` di PostgreSQL terbarui dengan skor dan komentar baru | `Ulasan` ID 17 berhasil diupdate di PostgreSQL menjadi `Nilai: 5/5` dengan komentar baru | **LULUS** |
+| **7** | **CRUD #7 (`Ulasan` — Delete)** | Menekan tombol `"Hapus ulasan"` yang memanggil `hapusUlasan(id, itemId)` | Baris `Ulasan` target terhapus dari PostgreSQL sementara `Item` induk tetap utuh | `Ulasan` ID 18 berhasil dihapus dari tabel `Ulasan` tanpa menghapus `Item` induk | **LULUS** |
+| **8** | **CRUD #8 (`Item` — Delete) & Relasi #2 (Transaksi)** | Menekan tombol `"Hapus Item & Kesaksian (Transaksi)"` (`prisma.$transaction`) | Seluruh `Ulasan` anak dan `Item` induk terhapus secara atomik | Transaksi berhasil menghapus `Item` ID 18 beserta 2 `Ulasan` anaknya hingga bersih (`count = 0`) | **LULUS** |
+| **9** | **Uji Relasi & Bukti *Rollback* Transaksi** | Mengeksekusi `prisma.$transaction` dengan langkah ke-2 sengaja menghapus ID fiktif `99999999` | Langkah ke-2 melempar `P2025` dan PostgreSQL membatalkan (*rollback*) penghapusan `Ulasan` | Langkah ke-2 melempar `P2025`; `1 ulasan` pada `Item` 19 terbukti **tetap utuh** | **LULUS** |
+| **10** | **Uji Kendala Unik Database (`P2002`)** | Mengirim ulasan kedua dengan `nama` saksi yang sama pada `itemId` yang sama | Ditangkap `P2002` (`@@unique([itemId, nama])`) dengan pesan ramah pengguna | Ditangkap `P2002` $\rightarrow$ pesan ramah `"Anda sudah pernah mengulas wilayah ulayat ini."` | **LULUS** |
+| **11** | **3 Bukti Validasi Server (Zod 4)** | Mengirim 3 payload tidak sah: (A) `luasHektar: -15`, (B) `nilai: 6`, (C) `komentar: "Ya"` | Ketiganya ditolak oleh `safeParse` di server dengan `fieldErrors` spesifik tanpa menyentuh DB | Ketiganya ditolak di server: `luasHektar`, `nilai`, dan `komentar` mengembalikan pesan kesalahan terkait | **LULUS** |
+| **12** | **Uji Sesi & Kata Sandi NIST SP 800-63B-4** | Menguji sandi `< 15` karakter, sandi bocor, dan 2 hash `scrypt` dari sandi yang sama | Sandi pendek & bocor ditolak; 2 hash berbeda karena salt unik; `timingSafeEqual` akurat | Sandi lemah/bocor ditolak; `hash1 !== hash2` (`true`); verifikasi `cocok=true, salah=false` | **LULUS** |
+
+### Tangkapan Layar Implementasi CRUD & Integrasi Basis Data (`v0.2`)
+
+<div align="center">
+  <img src="screenshots/v02-katalog-postgresql.png" alt="Katalog Wilayah Ulayat PostgreSQL 18" width="800" />
+  <p><em>Gambar Milestone 2 (A): Halaman Katalog Wilayah Ulayat (/katalog) Terintegrasi PostgreSQL 18 & Prisma ORM 7</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/v02-detail-crud-relasi.png" alt="Detail CRUD 2 Entitas & Relasi 1:N" width="800" />
+  <p><em>Gambar Milestone 2 (B): Halaman Detail (/katalog/1) Menampilkan CRUD Update Item, Relasi 1:N Ulasan, CRUD Update/Delete Ulasan, & Hapus Transaksi Atomik</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/v02-masuk-rbac-validasi.png" alt="Masuk Sesi Otoritas Adat RBAC 3 Peran" width="800" />
+  <p><em>Gambar Milestone 2 (C): Halaman Masuk Sesi Otoritas Adat (/masuk) dengan RBAC 3 Peran & Kebijakan Kata Sandi NIST SP 800-63B-4</em></p>
+</div>
+
+### 3 Tangkapan Layar Bukti Penolakan Validasi Sisi Server (Zod 4 `safeParse` & `z.flattenError`)
+
+<div align="center">
+  <img src="screenshots/v02-validasi-server-1-ulayat.png" alt="Bukti Validasi Server 1 - Entitas Item Ulayat" width="800" />
+  <p><em>Gambar Milestone 2 (D — Bukti Validasi Server #1): Penolakan Masukan Tidak Sah pada Pendaftaran Ulayat (/katalog/tambah) melalui Server Action simpanUlayatAction dengan Pesan Kesalahan Merah pada Setiap Field Terkait</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/v02-validasi-server-2-ulasan.png" alt="Bukti Validasi Server 2 - Entitas Ulasan" width="800" />
+  <p><em>Gambar Milestone 2 (E — Bukti Validasi Server #2): Penolakan Masukan Tidak Sah pada Ulasan Saksi (/katalog/1) melalui Server Action tambahUlasan beserta Tampilan Formulir Inline Ubah Ulasan (FormUbahUlasan)</em></p>
+</div>
+
+<div align="center">
+  <img src="screenshots/v02-validasi-server-3-masuk.png" alt="Bukti Validasi Server 3 - Autentikasi NIST SP 800-63B-4" width="800" />
+  <p><em>Gambar Milestone 2 (F — Bukti Validasi Server #3): Penolakan Kata Sandi &lt; 15 Karakter (NIST SP 800-63B-4) pada Halaman Masuk (/masuk) melalui Server Action masukAction</em></p>
+</div>
 
 ---
 

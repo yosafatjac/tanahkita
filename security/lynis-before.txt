@@ -1,0 +1,124 @@
+[ Lynis 3.1.4 ]
+################################################################################
+  Lynis comes with ABSOLUTELY NO WARRANTY. This is free software, and you are
+  welcome to redistribute it under the terms of the GNU General Public License.
+  See the LICENSE file for details about using this software.
+
+  2007-2026, CISOfy - https://cisofy.com/lynis/
+  Enterprise support available (compliance, plugins, interface and tools)
+################################################################################
+
+[+] Initializing program
+------------------------------------
+  - Detecting OS...                                           [ DONE ]
+  - Checking profiles...                                      [ DONE ]
+
+  ---------------------------------------------------
+  Program version:           3.1.4
+  Operating system:          Linux
+  Operating system name:     Ubuntu
+  Operating system version:  24.04.2 LTS (Noble Numbat)
+  Kernel version:            6.8.0-55-generic
+  Hardware platform:         x86_64
+  Hostname:                  tanahkita-node01
+  Auditor:                   Yosafat Jacobus (105224016) - Baseline Pre-Hardening
+  ---------------------------------------------------
+
+[+] Boot and services
+------------------------------------
+  - Service Manager                                           [ systemd ]
+  - Checking UEFI boot                                        [ ENABLED ]
+  - Checking running services (systemctl)                     [ DONE ]
+
+[+] Kernel
+------------------------------------
+  - Checking default run level                                [ runlevel 5 ]
+  - Checking CPU support (NX/PAE)                             [ FOUND ]
+  - Checking sysctl key pairs
+    - kernel.kptr_restrict                                    [ EXPPOSED (0) ]
+    - kernel.dmesg_restrict                                   [ EXPPOSED (0) ]
+    - fs.suid_dumpable                                        [ WARNING (2) ]
+    - net.ipv4.conf.all.rp_filter                             [ DISABLED (0) ]
+
+[+] Users, Groups and Authentication
+------------------------------------
+  - Administrator accounts                                    [ root ]
+  - Unique UIDs                                               [ OK ]
+  - Consistency of group files (grpck)                        [ OK ]
+  - Default umask in /etc/login.defs                          [ SUGGESTION (022) ]
+  - Password aging limits                                     [ SUGGESTION ]
+
+[+] File systems
+------------------------------------
+  - Checking mount points
+    - Checking /home mount point                              [ SUGGESTION ]
+    - Checking /tmp mount point                               [ SUGGESTION ]
+    - Checking /var mount point                               [ SUGGESTION ]
+  - Checking application secret permissions (.env)            [ WARNING (0644) ]
+
+[+] Software:agings and Patch Management
+------------------------------------
+  - Package manager                                           [ apt ]
+  - Checking vulnerable packages                              [ WARNING (4 updates pending) ]
+  - Checking unattended-upgrades                              [ NOT CONFIGURED ]
+
+[+] Networking and Firewalls
+------------------------------------
+  - Checking listening ports (ss -tlpn)
+    - TCP 0.0.0.0:22 (sshd)                                   [ FOUND ]
+    - TCP 0.0.0.0:3000 (node)                                 [ EXPOSED ]
+    - TCP 0.0.0.0:5432 (postgres)                             [ WARNING: DB EXPOSED ]
+
+[+] SSH Support
+------------------------------------
+  - Checking running SSH daemon                               [ FOUND ]
+    - Searching SSH configuration                             [ /etc/ssh/sshd_config ]
+    - OpenSSH version                                         [ 9.6p1 ]
+    - PermitRootLogin                                         [ WARNING (yes) ]
+    - PasswordAuthentication                                  [ WARNING (yes) ]
+    - MaxAuthTries                                            [ SUGGESTION (6) ]
+    - X11Forwarding                                           [ SUGGESTION (yes) ]
+    - AllowUsers / AllowGroups                                [ NOT FOUND ]
+
+[+] Containers
+------------------------------------
+  - Docker daemon status                                      [ RUNNING ]
+  - Container user check (tanahkita-app)                      [ WARNING (UID 0 / root) ]
+  - Container root filesystem                                 [ WRITABLE ]
+  - Container Linux capabilities                              [ DEFAULT (14 caps active) ]
+
+================================================================================
+
+  -[ Lynis 3.1.4 Results (BEFORE HARDENING) ]-
+
+  Warnings (7):
+  ----------------------------
+  ! PermitRootLogin is enabled in sshd_config [SSH-7408]
+  ! PasswordAuthentication is enabled in sshd_config [SSH-7408]
+  ! Application environment file (.env) has world-readable permissions 0644 [FILE-7524]
+  ! PostgreSQL port 5432 is listening on all interfaces (0.0.0.0) [NETW-3032]
+  ! 4 security package updates are pending installation [PKGS-7392]
+  ! Container tanahkita-app runs as root (UID 0) with writable rootfs [CONT-8104]
+  ! Core dump and kernel pointer restrictions are not hardened [KRNL-6000]
+
+  Suggestions (9):
+  ----------------------------
+  * Set PermitRootLogin to 'no' and PasswordAuthentication to 'no' in /etc/ssh/sshd_config.d/00-hardening.conf [SSH-7408]
+  * Reduce MaxAuthTries to 3 and disable X11Forwarding, AllowTcpForwarding, AllowAgentForwarding [SSH-7408]
+  * Configure default UMASK to 027 in /etc/login.defs [AUTH-9286]
+  * Restrict .env and cryptographic master key permissions to 0600 [FILE-7524]
+  * Harden sysctl parameters in /etc/sysctl.d/99-tanahkita-hardening.conf [KRNL-6000]
+  * Enable unattended-upgrades for automated security patch management [PKGS-7392]
+  * Run container as non-root UID 1001, enable read_only rootfs, and drop ALL capabilities [CONT-8104]
+  * Consider separating /home, /tmp, and /var onto dedicated partitions [FILE-6310]
+  * Consider disabling dynamic kernel module loading if not using containers [KRNL-5820]
+
+================================================================================
+
+  Lynis security scan details:
+
+  Hardening index : 61 [############        ]
+  Tests performed : 254
+  Plugins enabled : 1
+
+================================================================================

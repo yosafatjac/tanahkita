@@ -1,0 +1,63 @@
+# =============================================================================
+# TanahKita — Dependabot Supply-Chain Security Configuration (Tag: sec-0.2)
+# Mitigates compromised upstream releases (e.g., Shai-Hulud npm worm Nov 2025,
+# Trivy CI action tag hijacking GHSA-69fq-xp46-6x23 Mar 2026) via 7-day cooldown
+# and pinned ecosystem checks.
+# =============================================================================
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/Pengembangan Aplikasi Web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "Asia/Jayapura"
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
+    labels:
+      - "security"
+      - "dependencies"
+      - "supply-chain"
+
+  - package-ecosystem: "pip"
+    directory: "/Kriptografi"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:30"
+      timezone: "Asia/Jayapura"
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    labels:
+      - "security"
+      - "cryptography"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Asia/Jayapura"
+    cooldown:
+      default-days: 7
+    labels:
+      - "security"
+      - "container"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 7
+    labels:
+      - "security"
+      - "ci-cd"

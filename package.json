@@ -1,6 +1,6 @@
 {
   "name": "tanahkita-root",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "TanahKita — Satu Repositori Terintegrasi (PAW, Kriptografi, KKS)",
   "scripts": {
@@ -8,6 +8,7 @@
     "build": "npm --prefix \"Pengembangan Aplikasi Web\" run build",
     "start": "npm --prefix \"Pengembangan Aplikasi Web\" run start",
     "lint": "npm --prefix \"Pengembangan Aplikasi Web\" run lint",
-    "test:crypto": "python3 -m unittest discover -s \"Kriptografi/tests\" -p 'test_*.py' -v"
+    "test:paw": "npm --prefix \"Pengembangan Aplikasi Web\" run test:paw",
+    "test:crypto": "pytest Kriptografi/tests -v"
   }
 }

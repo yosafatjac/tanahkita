@@ -12,7 +12,6 @@ export default async function HalamanKatalog() {
   // connection() memastikan halaman selalu membaca data terbaru saat ada permintaan (Modul 6)
   await connection();
   const items = await ambilDaftarItem();
-
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Breadcrumb Nav */}

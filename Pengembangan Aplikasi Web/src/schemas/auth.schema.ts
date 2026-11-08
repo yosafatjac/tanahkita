@@ -11,7 +11,8 @@ export const loginSchema = z.object({
 
   kataSandi: z
     .string({ error: "Kata sandi wajib diisi" })
-    .min(8, "Kata sandi minimal 8 karakter"),
+    .min(15, "Kata sandi minimal 15 karakter sesuai standar NIST SP 800-63B-4")
+    .max(128, "Kata sandi maksimal 128 karakter"),
 });
 
 export type LoginSchemaInput = z.infer<typeof loginSchema>;

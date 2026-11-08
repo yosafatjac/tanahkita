@@ -1,0 +1,24 @@
+# =============================================================================
+# TanahKita — .dockerignore (Tag: sec-0.2 / v0.2)
+# Prevents secrets, git history, local caches, and host node_modules from
+# leaking into Docker build context or image layers.
+# =============================================================================
+.git
+.gitignore
+.github
+**/node_modules
+**/.next
+**/.env
+**/.env.*
+!**/.env.example
+**/*.key
+**/*.pem
+**/*.p12
+.secrets
+**/.venv
+**/__pycache__
+**/.pytest_cache
+security/lynis-*.txt
+security/image-scan-*.txt
+docs
+*.md

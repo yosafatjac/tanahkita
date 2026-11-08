@@ -8,7 +8,7 @@ const DELAPAN_JAM = 60 * 60 * 8; // 28.800 detik (8 jam sesuai Tabel 3 Modul 5)
 export interface DataSesi {
   email: string;
   nama: string;
-  peran: "Tetua Adat" | "Verifikator Adat";
+  peran: "Tetua Adat" | "Verifikator Adat" | "Pemohon Adat";
   marga: string;
   kedaluwarsa: number;
 }

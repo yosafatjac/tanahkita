@@ -23,39 +23,58 @@ Repositori ini merupakan **satu produk bersama terintegrasi** yang memenuhi capa
 
 ```text
 tanahkita/
-├── Pengembangan Aplikasi Web/ <-- [Pengembangan Aplikasi Web / PAW] (Tag: v0.1)
-│   ├── src/                   <-- Source code mandiri Next.js / TypeScript
-│   │   ├── app/               <-- 5 Halaman Aplikasi (Beranda, Daftar, Klaim, Verifikasi, Edukasi)
-│   │   ├── components/        <-- 8 Komponen Reusable UI
-│   │   ├── lib/               <-- Web Crypto API (SubtleCrypto SHA-256 lokal)
-│   │   ├── data/              <-- Mock Data Marga Mimika Papua
-│   │   └── types/             <-- TypeScript definitions
-│   ├── screenshots/           <-- Tangkapan layar antarmuka ponsel, tablet, desktop, dan formulir
-│   ├── package.json
-│   ├── tailwind.config.ts
-│   └── README.md              <-- Dokumentasi teknis lengkap Pemweb (termasuk embed screenshot)
+├── Pengembangan Aplikasi Web/ <-- [Pengembangan Aplikasi Web / PAW] (Tag: v0.1 & v0.2)
+│   ├── prisma/                <-- Skema PostgreSQL 18 (Item 1:N Ulasan), migrasi SQL, & seed.ts
+│   ├── scripts/               <-- Skrip verifikasi otomatis 12 skenario CRUD, relasi, transaksi, & Zod
+│   ├── src/                   <-- Source code Next.js 15 App Router / TypeScript 5
+│   │   ├── app/               <-- Beranda, Katalog CRUD (/katalog, /katalog/[id], /katalog/tambah), Masuk Sesi RBAC
+│   │   ├── components/        <-- Komponen Server & Client (termasuk FormUbahItem, FormUlasan, FormUbahUlasan)
+│   │   ├── lib/               <-- Prisma 7 PG adapter, data.ts, sesi.ts (HttpOnly), password-hash.ts (scrypt NIST)
+│   │   └── schemas/           <-- Skema validasi server Zod 4 (ulayat, ulasan, skemaUbahUlasan, auth)
+│   └── README.md              <-- Dokumentasi teknis lengkap PAW (v0.1 & v0.2)
 │
-├── Kriptografi/               <-- [Kriptografi] Komponen Kriptografi Standar (Tag: v0.1)
-│   ├── src/                   <-- Source code mandiri Python
-│   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (hashlib & hmac)
-│   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (secrets)
-│   │   └── chain.py           <-- Hash-chain sequential ledger riwayat tanah
+├── Kriptografi/               <-- [Kriptografi] Layanan Kriptografi Terautentikasi (Tag: v0.1 & v0.2)
+│   ├── src/
+│   │   ├── hasher.py          <-- SHA-256 hashing & deteksi tampering (Tugas 1)
+│   │   ├── tokens.py          <-- CSPRNG token verifikasi tetua adat (Tugas 1)
+│   │   ├── chain.py           <-- Hash-chain sequential ledger riwayat tanah (Tugas 1)
+│   │   ├── key_manager.py     <-- [Tugas 2] CSPRNG 256-bit Master Key di luar repo (0600), rotasi, & HKDF-SHA256
+│   │   ├── validator.py       <-- [Tugas 2] Validasi allowlist ketat, tolak bool/unknown fields, NFC, & AAD
+│   │   ├── aead_archive.py    <-- [Tugas 2] Enkripsi arsip AES-256-GCM (AEAD) + AAD terhubung ke hasher.py
+│   │   ├── hmac_chain.py      <-- [Tugas 2] Rantai riwayat berautentikasi HMAC-SHA-256 (menutup celah K1)
+│   │   └── password_security.py <-- [Tugas 2] Hash kata sandi lambat Argon2id + kebijakan NIST SP 800-63B-4
 │   ├── tests/
-│   │   └── test_crypto.py     <-- 5 Skenario Uji Unit Pytest/Unittest (Lolos 100%)
-│   └── README.md              <-- Matriks 3 Kebutuhan Perlindungan Data (K1-K5)
+│   │   ├── test_crypto.py     <-- 5 Skenario Uji Unit Tugas 1
+│   │   └── test_tugas2.py     <-- 12 Skenario Uji Otomatis Tugas 2 (16 passed, 1 xfailed)
+│   ├── KEPUTUSAN.md           <-- [Tugas 2] Dokumen keputusan teknis: alur data, primitif, manajemen kunci, risiko sisa
+│   └── README.md              <-- Dokumentasi & panduan verifikasi pytest Kriptografi
 │
-├── security/                  <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1) — path sesuai instruksi dosen
-│   ├── asset-inventory.md     <-- 12 aset (data, layanan, secrets, backup, log, akun admin) + alasan CIA
-│   ├── dfd.md                 <-- DFD Level 1: E1–E3, P1–P4, D1–D6, DF1–DF19, 3 trust boundary, penanda kripto
-│   ├── threat-model.md        <-- 13 ancaman STRIDE spesifik pada elemen DFD
-│   └── risk-register.md       <-- Register 5 risiko prioritas & rencana kontrol mitigasi
+├── security/                  <-- [Keamanan Komputasi dan Siber / KKS] (Tag: sec-0.1 & sec-0.2)
+│   ├── asset-inventory.md     <-- [Tugas 1] 12 aset + alasan CIA
+│   ├── dfd.md                 <-- [Tugas 1] DFD Level 1 + 3 trust boundary
+│   ├── threat-model.md        <-- [Tugas 1] 13 ancaman STRIDE spesifik
+│   ├── risk-register.md       <-- [Tugas 1 & 2] Register 5 risiko prioritas + matriks keterlacakan realisasi sec-0.2
+│   ├── access-tests.md        <-- [Tugas 2] Matriks RBAC/ABAC 3 peran, bukti Argon2id/scrypt NIST, 8 uji positif & 8 negatif
+│   ├── hardening-notes.md     <-- [Tugas 2] Hardening OS/SSH, CVE-2024-6387 backport, analisis 6 temuan Lynis, & kontainer
+│   ├── lynis-before.txt       <-- [Tugas 2] Hasil audit Lynis sebelum hardening (Hardening Index: 61)
+│   ├── lynis-after.txt        <-- [Tugas 2] Hasil audit Lynis sesudah hardening (Hardening Index: 76 >= 70)
+│   ├── image-scan-before.txt  <-- [Tugas 2] Hasil Trivy v0.69.3 sebelum hardening (4 CRITICAL, 19 HIGH)
+│   ├── image-scan-after.txt   <-- [Tugas 2] Hasil Trivy v0.69.3 sesudah hardening multi-stage Alpine (0 CRITICAL)
+│   ├── sbom.cdx.json          <-- [Tugas 2] Software Bill of Materials standar CycloneDX v1.6 JSON
+│   └── config/
+│       └── 00-hardening.conf  <-- [Tugas 2] Konfigurasi drop-in OpenSSH (/etc/ssh/sshd_config.d/00-hardening.conf)
 │
+├── Dockerfile                 <-- [Tugas 2 KKS] Multi-stage build node:22-alpine@sha256, npm ci --ignore-scripts, UID 1001
+├── .dockerignore              <-- [Tugas 2 KKS] Pengecualian .env, .git, *.key, dan node_modules dari konteks build
+├── compose.yaml               <-- [Tugas 2 KKS] Kontainer hardened (read_only, tmpfs, cap_drop: ALL, no-new-privileges, internal net)
+├── .github/dependabot.yml     <-- [Tugas 2 KKS] Pembaruan dependensi otomatis dengan cooldown 7 hari (mitigasi Shai-Hulud)
 ├── docs/
-│   └── lighthouse-report.md   <-- Laporan Audit Aksesibilitas Lighthouse (Skor 98/100)
-├── package.json               <-- Proxy scripts root: 'npm run dev', 'npm run build', 'npm run test:crypto'
+│   ├── lighthouse-report.md   <-- Laporan Audit Aksesibilitas Lighthouse (Skor 98/100)
+│   └── web-milestone-2.md     <-- [Tugas 2 PAW] Dokumentasi ERD, 8 CRUD 2 entitas, 3 bukti validasi Zod, & 12 skenario uji
+├── package.json               <-- Proxy scripts root: 'npm run dev', 'npm run test:paw', 'npm run test:crypto'
 ├── README.md                  <-- Dokumentasi Master ini
-├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI untuk ketiga mata kuliah
-└── .gitignore                 <-- Pengabaian file lokal, cache build, dan secrets
+├── AI_LOG.md                  <-- Transparansi Pemanfaatan AI untuk ketiga mata kuliah (Tugas 1 & Tugas 2)
+└── .gitignore                 <-- Pengabaian file lokal, cache build, .env, dan *.key
 ```
 
 ---
@@ -65,43 +84,39 @@ tanahkita/
 | Penanda (Tag) | Mata Kuliah | Status | Keterangan |
 | :---: | :--- | :---: | :--- |
 | **`v0.1`** | **Pengembangan Aplikasi Web** | Selesai | Milestone 1: 5 Halaman, 8 Komponen Reusable, Validasi sisi klien ketat, Live Web Crypto hashing di peramban, WCAG AA. |
-| **`v0.1`** | **Kriptografi** | Selesai | Tugas 1: Pustaka standar `hashlib` & `secrets`, 3 kebutuhan proteksi data, 5 skenario uji otomatis lolos 100% dalam 0.001s. |
-| **`sec-0.1`** | **Keamanan Komputasi & Siber** | Siap | Tugas 1: DFD dengan 3 trust boundary, 10+ threat STRIDE, 5 risiko prioritas beralasan kondisi produk, rencana kontrol Tugas 2/3. |
+| **`v0.1`** | **Kriptografi** | Selesai | Tugas 1: Pustaka standar `hashlib` & `secrets`, 3 kebutuhan proteksi data, 5 skenario uji otomatis lolos 100%. |
+| **`sec-0.1`** | **Keamanan Komputasi & Siber** | Selesai | Tugas 1: DFD dengan 3 trust boundary, 13 threat STRIDE, 5 risiko prioritas beralasan kondisi produk. |
+| **`v0.2`** | **Pengembangan Aplikasi Web** | **Selesai** | **Milestone 2:** Integrasi PostgreSQL 18 + Prisma ORM 7 (`Item` 1:N `Ulasan`), CRUD lengkap 2 entitas (8 operasi CRUD termasuk `ubahUlasan`), validasi server Zod 4 (`safeParse`), sesi cookie `HttpOnly` + RBAC 3 peran, 12 skenario uji lolos 100%. |
+| **`v0.2`** | **Kriptografi** | **Selesai** | **Tugas 2:** Layanan arsip terenkripsi `AES-256-GCM` (AEAD + AAD), rantai berautentikasi `HMAC-SHA-256` (menutup celah K1), derivasi kunci `HKDF-SHA256` dari kunci master CSPRNG di luar repo (`0600`), hash sandi `Argon2id`, `KEPUTUSAN.md`, 17 skenario `pytest` (`16 passed, 1 xfailed`). |
+| **`sec-0.2`** | **Keamanan Komputasi & Siber** | **Selesai** | **Tugas 2:** Matriks RBAC/ABAC & 16 uji akses berimbang (8 positif + 8 negatif), hash lambat `Argon2id`/`scrypt` & NIST SP 800-63B-4, hardening OS/SSH (`00-hardening.conf`), Lynis `61 -> 76`, kontainer non-root `read_only` (`CapEff: 0`), Trivy `0 CRITICAL`, CycloneDX SBOM & Dependabot cooldown. |
 
 ---
 
-## 4. Cara Menjalankan Aplikasi & Pengujian
+## 4. Cara Menjalankan Aplikasi & Pengujian (Milestone 1 & Milestone 2)
 
-### A. Menjalankan Antarmuka Web (Next.js)
-Dari direktori utama repositori (`tanahkita`):
+### A. Menjalankan Migrasi Basis Data, Seed, & 12 Skenario Uji PAW (`v0.2`)
+Dari direktori `Pengembangan Aplikasi Web`:
 
 ```bash
-# 1. Pasang dependensi
-npm install
-
-# 2. Jalankan server pengembangan lokal
+cd "Pengembangan Aplikasi Web"
+cp .env.example .env
+npx prisma migrate dev --name init
+npx prisma generate
+npx prisma db seed
+npm run test:paw
 npm run dev
-
-# 3. Buka peramban di: http://localhost:3000
 ```
 
-### B. Menjalankan Pengujian Unit Kriptografi (Python)
-Dapat dijalankan langsung dari root proyek menggunakan `npm` atau `python3`:
+### B. Menjalankan 17 Skenario Pengujian Otomatis Kriptografi (`v0.1` & `v0.2`)
+Dapat dijalankan menggunakan `pytest` untuk menjalankan seluruh pengujian Tugas 1 (`test_crypto.py`) dan Tugas 2 (`test_tugas2.py`):
 
 ```bash
-# Melalui script npm:
-npm run test:crypto
-
-# Atau langsung menggunakan Python standard library (tanpa dependensi luar):
-python3 -m unittest discover -s "Kriptografi/tests" -p "test_*.py" -v
+pytest Kriptografi/tests -v
 ```
 
-Hasil eksekusi: **5 dari 5 skenario lolos (100% OK)**:
-- Deterministic SHA-256 & Avalanche Effect.
-- Deteksi manipulasi dokumen 1-byte (Uji Negatif).
-- Entropi tinggi & keunikan token CSPRNG tetua adat.
-- Integritas rantai riwayat tanah utuh dari blok genesis.
-- Deteksi manipulasi data riwayat di tengah rantai (Uji Negatif).
+Hasil eksekusi: **`16 passed, 1 xfailed in 0.20s` (100% Sesuai Rubrik)**:
+- **5 Skenario Tugas 1 (`test_crypto.py`):** SHA-256, deteksi manipulasi 1-byte, CSPRNG token, dan hash-chain dasar.
+- **12 Skenario Tugas 2 (`test_tugas2.py`):** Round-trip `AES-256-GCM` + `AAD`, deteksi manipulasi ciphertext 1-byte, penolakan konteks `AAD` salah, rantai `HMAC-SHA-256` & deteksi hitung-ulang oleh admin DB nakal (*insider threat*), pemisahan kunci `HKDF-SHA256`, rotasi kunci master, penolakan izin kunci longgar (`0644`), validasi *allowlist* ketat (`bool` ditolak untuk numerik, kolom asing ditolak), normalisasi Unicode `NFC`, `Argon2id` + kebijakan NIST SP 800-63B-4, dan dokumentasi temuan `@pytest.mark.xfail(strict=True)`.
 
 ---
 

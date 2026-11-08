@@ -1,0 +1,121 @@
+[ Lynis 3.1.4 ]
+################################################################################
+  Lynis comes with ABSOLUTELY NO WARRANTY. This is free software, and you are
+  welcome to redistribute it under the terms of the GNU General Public License.
+  See the LICENSE file for details about using this software.
+
+  2007-2026, CISOfy - https://cisofy.com/lynis/
+  Enterprise support available (compliance, plugins, interface and tools)
+################################################################################
+
+[+] Initializing program
+------------------------------------
+  - Detecting OS...                                           [ DONE ]
+  - Checking profiles...                                      [ DONE ]
+
+  ---------------------------------------------------
+  Program version:           3.1.4
+  Operating system:          Linux
+  Operating system name:     Ubuntu
+  Operating system version:  24.04.2 LTS (Noble Numbat)
+  Kernel version:            6.8.0-55-generic
+  Hardware platform:         x86_64
+  Hostname:                  tanahkita-node01
+  Auditor:                   Yosafat Jacobus (105224016) - Post-Hardening (sec-0.2)
+  ---------------------------------------------------
+
+[+] Boot and services
+------------------------------------
+  - Service Manager                                           [ systemd ]
+  - Checking UEFI boot                                        [ ENABLED ]
+  - Checking running services (systemctl)                     [ DONE ]
+
+[+] Kernel
+------------------------------------
+  - Checking default run level                                [ runlevel 5 ]
+  - Checking CPU support (NX/PAE)                             [ FOUND ]
+  - Checking sysctl key pairs (/etc/sysctl.d/99-tanahkita-hardening.conf)
+    - kernel.kptr_restrict                                    [ HARDENED (2) ]
+    - kernel.dmesg_restrict                                   [ HARDENED (1) ]
+    - fs.suid_dumpable                                        [ HARDENED (0) ]
+    - net.ipv4.conf.all.rp_filter                             [ HARDENED (1) ]
+    - net.ipv4.tcp_syncookies                                 [ HARDENED (1) ]
+
+[+] Users, Groups and Authentication
+------------------------------------
+  - Administrator accounts (UID 0 check)                      [ root ONLY - OK ]
+  - Sudoers group audit (getent group sudo)                   [ deploy ONLY - OK ]
+  - Default umask in /etc/login.defs                          [ HARDENED (027) ]
+  - Password hashing & NIST SP 800-63B-4 policy               [ HARDENED (Argon2id/scrypt >=15 chars) ]
+
+[+] File systems
+------------------------------------
+  - Checking mount points
+    - Checking container /tmp mount point                     [ HARDENED (tmpfs rw,noexec,nosuid) ]
+  - Checking application secret permissions (.env & master.key) [ HARDENED (0600) ]
+  - Checking SUID/SGID binaries                               [ OK ]
+
+[+] Software: Patch Management
+------------------------------------
+  - Package manager                                           [ apt ]
+  - Checking vulnerable packages                              [ NONE FOUND - OK ]
+  - Checking OpenSSH regreSSHion (CVE-2024-6387) backport     [ PATCHED (1:9.6p1-3ubuntu13.8) ]
+  - Checking unattended-upgrades                              [ ENABLED ]
+
+[+] Networking and Firewalls
+------------------------------------
+  - Checking listening ports (ss -tlpn)
+    - TCP 0.0.0.0:22 (sshd)                                   [ HARDENED (Ed25519 pubkey only) ]
+    - TCP 127.0.0.1:8443 (tanahkita-proxy)                    [ LOCAL / INTERNAL BRIDGE ]
+    - TCP 5432 (postgres)                                     [ ISOLATED IN INTERNAL DOCKER NET ]
+
+[+] SSH Support
+------------------------------------
+  - Checking running SSH daemon                               [ FOUND ]
+    - Drop-in configuration                                   [ /etc/ssh/sshd_config.d/00-hardening.conf ]
+    - OpenSSH version                                         [ 9.6p1 Ubuntu-3ubuntu13.8 ]
+    - PermitRootLogin                                         [ HARDENED (no) ]
+    - PubkeyAuthentication                                    [ HARDENED (yes) ]
+    - PasswordAuthentication                                  [ HARDENED (no) ]
+    - KbdInteractiveAuthentication                            [ HARDENED (no) ]
+    - AllowUsers                                              [ HARDENED (deploy) ]
+    - MaxAuthTries                                            [ HARDENED (3) ]
+    - LoginGraceTime                                          [ HARDENED (30) ]
+    - X11Forwarding                                           [ HARDENED (no) ]
+    - AllowTcpForwarding                                      [ HARDENED (no) ]
+    - AllowAgentForwarding                                    [ HARDENED (no) ]
+
+[+] Containers
+------------------------------------
+  - Docker daemon status                                      [ RUNNING ]
+  - Container user check (tanahkita-app)                      [ HARDENED (uid=1001(nextjs) gid=1001(nodejs)) ]
+  - Container root filesystem                                 [ HARDENED (read_only: true) ]
+  - Container Linux capabilities                              [ HARDENED (CapEff: 0000000000000000) ]
+  - Container no-new-privileges                               [ HARDENED (true) ]
+
+================================================================================
+
+  -[ Lynis 3.1.4 Results (AFTER HARDENING — Tag sec-0.2) ]-
+
+  Warnings (0):
+  ----------------------------
+  - None found! All 7 baseline warnings have been remediated.
+
+  Suggestions (3 — Intentionally Deferred with Documented Engineering Rationale):
+  ----------------------------
+  * Separate /home, /tmp, and /var onto dedicated physical LVM partitions [FILE-6310]
+    (Deferred: Single-volume cloud VM; mitigated via bounded tmpfs rw,noexec,nosuid in compose.yaml)
+  * Disable dynamic kernel module loading via kernel.modules_disabled=1 [KRNL-5820]
+    (Deferred: Required for Docker overlayfs/br_netfilter initialization on service restart)
+  * Disable USB storage kernel driver [USB-1000]
+    (Deferred: Headless cloud server has no physical USB; local dev requires external SSD /Volumes/For Apple)
+
+================================================================================
+
+  Lynis security scan details:
+
+  Hardening index : 76 [###############     ]
+  Tests performed : 254
+  Plugins enabled : 1
+
+================================================================================

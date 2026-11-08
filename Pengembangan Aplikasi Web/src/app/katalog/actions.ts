@@ -156,8 +156,25 @@ export async function ubahItem(
   _prev: FormActionState,
   formData: FormData
 ): Promise<FormActionState> {
-  const deskripsi = formData.get("deskripsi")?.toString() || "";
+  const deskripsi = formData.get("deskripsi")?.toString().trim() || "";
   const tersedia = formData.get("tersedia") === "on" || formData.get("tersedia") === "true";
+
+  // Pemeriksaan RBAC apabila sedang login sebagai Pemohon Adat (BFLA Prevention)
+  const sesi = await bacaSesi();
+  if (sesi && sesi.peran === "Pemohon Adat") {
+    return {
+      success: false,
+      message: "403 Forbidden: Peran Pemohon Adat tidak berwenang mengubah status arsip wilayah ulayat.",
+    };
+  }
+
+  if (deskripsi.length < 10) {
+    return {
+      success: false,
+      message: "Deskripsi patok batas minimal 10 karakter.",
+      fieldErrors: { deskripsi: ["Deskripsi patok batas minimal 10 karakter."] },
+    };
+  }
 
   try {
     await prisma.item.update({
@@ -192,6 +209,12 @@ export async function ubahItem(
  * Aksi Standar Modul 6: Hapus Item Beserta Seluruh Ulasannya (Transaksi Atomik)
  */
 export async function hapusItem(id: number) {
+  const sesi = await bacaSesi();
+  if (sesi && sesi.peran !== "Tetua Adat") {
+    throw new Error(
+      `403 Forbidden: Hanya Tetua Adat (Admin) yang berwenang menghapus arsip wilayah ulayat secara permanen (peran saat ini: ${sesi.peran}).`
+    );
+  }
   await prisma.$transaction([
     prisma.ulasan.deleteMany({ where: { itemId: id } }),
     prisma.item.delete({ where: { id } }),

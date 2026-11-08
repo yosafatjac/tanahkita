@@ -1,6 +1,6 @@
 {
   "name": "tanahkita",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Platform Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua (Kabupaten Mimika)",
   "scripts": {
@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:crypto": "python3 -m unittest discover -s \"../Kriptografi/tests\" -p 'test_*.py' -v"
+    "test:paw": "npx tsx scripts/uji-crud-modul6.ts",
+    "test:crypto": "pytest ../Kriptografi/tests -v"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",

@@ -14,9 +14,9 @@ export function FormMasuk() {
   const [email, setEmail] = useState((state.fields?.email as string) || "");
   const [kataSandi, setKataSandi] = useState("");
 
-  const isiKredensialTetua = () => {
-    setEmail("tetua.magal@tanahkita.id");
-    setKataSandi("AdatMimika2026");
+  const isiKredensialPeran = (pilihanEmail: string) => {
+    setEmail(pilihanEmail);
+    setKataSandi("AdatMimika2026#TanahKita");
   };
 
   return (
@@ -24,11 +24,11 @@ export function FormMasuk() {
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-900 to-stone-900 p-6 text-white text-center">
         <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-500/20 text-amber-300 border border-amber-400/30 mb-2">
-          Otoritas Adat Mimika
+          Otoritas Adat Mimika • RBAC 3 Peran
         </span>
-        <h2 className="text-xl font-bold font-serif">Masuk Sesi Tetua Adat</h2>
+        <h2 className="text-xl font-bold font-serif">Masuk Sesi Otoritas Adat</h2>
         <p className="text-xs text-amber-100/80 mt-1">
-          Hanya Tetua dan Verifikator Adat yang berwenang mencatatkan tanah ulayat baru.
+          Dilindungi hash kata sandi lambat (scrypt + salt unik) & standar NIST SP 800-63B-4 (min. 15 karakter).
         </p>
       </div>
 
@@ -55,16 +55,16 @@ export function FormMasuk() {
             <div className="w-full border-t border-stone-200" />
           </div>
           <div className="relative flex justify-center text-[10px] uppercase">
-            <span className="bg-white px-2 text-stone-400 font-semibold">Atau Masuk Manual</span>
+            <span className="bg-white px-2 text-stone-400 font-semibold">Atau Masuk Manual (Uji RBAC)</span>
           </div>
         </div>
       </div>
 
       {/* Form Manual */}
-      <form action={formAction} className="p-6 pt-0 space-y-4">
+      <form action={formAction} noValidate className="p-6 pt-0 space-y-4">
         <div>
           <label htmlFor="email" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-            Alamat Email Tetua
+            Alamat Email Peran Adat
           </label>
           <input
             type="email"
@@ -73,16 +73,20 @@ export function FormMasuk() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tetua.magal@tanahkita.id"
+            aria-invalid={Boolean(state.fieldErrors?.email)}
+            aria-describedby={state.fieldErrors?.email ? "err-email-masuk" : undefined}
             className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-600"
           />
           {state.fieldErrors?.email && (
-            <p className="text-xs text-rose-600 font-medium mt-1">🔴 {state.fieldErrors.email[0]}</p>
+            <p id="err-email-masuk" className="text-xs text-rose-600 font-medium mt-1">
+              🔴 {state.fieldErrors.email[0]}
+            </p>
           )}
         </div>
 
         <div>
           <label htmlFor="kataSandi" className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-            Kata Sandi
+            Frasa Kata Sandi (Min. 15 Karakter — NIST SP 800-63B-4)
           </label>
           <input
             type="password"
@@ -90,22 +94,45 @@ export function FormMasuk() {
             name="kataSandi"
             value={kataSandi}
             onChange={(e) => setKataSandi(e.target.value)}
-            placeholder="••••••••••••"
+            placeholder="AdatMimika2026#TanahKita"
+            aria-invalid={Boolean(state.fieldErrors?.kataSandi)}
+            aria-describedby={state.fieldErrors?.kataSandi ? "err-sandi-masuk" : undefined}
             className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-amber-600"
           />
           {state.fieldErrors?.kataSandi && (
-            <p className="text-xs text-rose-600 font-medium mt-1">🔴 {state.fieldErrors.kataSandi[0]}</p>
+            <p id="err-sandi-masuk" className="text-xs text-rose-600 font-medium mt-1">
+              🔴 {state.fieldErrors.kataSandi[0]}
+            </p>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-xs pt-1">
-          <button
-            type="button"
-            onClick={isiKredensialTetua}
-            className="text-amber-700 hover:underline font-semibold"
-          >
-            📋 Isi Otomatis Kredensial Uji
-          </button>
+        <div className="space-y-1.5 pt-1">
+          <p className="text-[11px] font-semibold text-stone-500">
+            📋 Isi Otomatis Kredensial Uji RBAC (Frasa Sandi 24 Karakter):
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              onClick={() => isiKredensialPeran("tetua.magal@tanahkita.id")}
+              className="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-900 hover:bg-amber-100 font-semibold"
+            >
+              1. Tetua Adat (Admin)
+            </button>
+            <button
+              type="button"
+              onClick={() => isiKredensialPeran("verifikator.omaleng@tanahkita.id")}
+              className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 hover:bg-emerald-100 font-semibold"
+            >
+              2. Verifikator Adat
+            </button>
+            <button
+              type="button"
+              onClick={() => isiKredensialPeran("pemohon.beanal@tanahkita.id")}
+              className="px-2.5 py-1 rounded-lg bg-stone-100 border border-stone-300 text-[11px] text-stone-800 hover:bg-stone-200 font-semibold"
+            >
+              3. Pemohon Adat
+            </button>
+          </div>
         </div>
 
         <button
