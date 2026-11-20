@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { ulayatSchema, type FormActionState } from "@/schemas";
+import { ulayatSchema, skemaUbahItem, type FormActionState } from "@/schemas";
 import { bacaSesi } from "@/lib/sesi";
 
 // Helper konversi kategori formulir ke Enum Prisma
@@ -149,16 +149,15 @@ export async function tambahItem(
 }
 
 /**
- * Aksi Standar Modul 6: Ubah Item
+ * Aksi Standar Modul 6 & Perbaikan Galat 1 Modul 7: Ubah Item
+ * Memakai skemaUbahItem (Zod 4 z.stringbool()) agar string "false" dari <select>
+ * dipetakan secara akurat menjadi boolean false (bukan true seperti z.coerce.boolean()).
  */
 export async function ubahItem(
   id: number,
   _prev: FormActionState,
   formData: FormData
 ): Promise<FormActionState> {
-  const deskripsi = formData.get("deskripsi")?.toString().trim() || "";
-  const tersedia = formData.get("tersedia") === "on" || formData.get("tersedia") === "true";
-
   // Pemeriksaan RBAC apabila sedang login sebagai Pemohon Adat (BFLA Prevention)
   const sesi = await bacaSesi();
   if (sesi && sesi.peran === "Pemohon Adat") {
@@ -168,18 +167,22 @@ export async function ubahItem(
     };
   }
 
-  if (deskripsi.length < 10) {
+  const hasil = skemaUbahItem.safeParse(Object.fromEntries(formData));
+  if (!hasil.success) {
     return {
       success: false,
-      message: "Deskripsi patok batas minimal 10 karakter.",
-      fieldErrors: { deskripsi: ["Deskripsi patok batas minimal 10 karakter."] },
+      message: "Terdapat kesalahan pada pembaruan data wilayah ulayat.",
+      fieldErrors: z.flattenError(hasil.error).fieldErrors,
     };
   }
 
   try {
     await prisma.item.update({
       where: { id },
-      data: { deskripsi, tersedia },
+      data: {
+        deskripsi: hasil.data.deskripsi,
+        tersedia: hasil.data.tersedia,
+      },
     });
   } catch (e: unknown) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -206,7 +209,11 @@ export async function ubahItem(
 }
 
 /**
- * Aksi Standar Modul 6: Hapus Item Beserta Seluruh Ulasannya (Transaksi Atomik)
+ * Aksi Standar Modul 6 & Perbaikan Galat 2 & 3 Modul 7:
+ * - Menghapus Ulasan dan Item dalam satu transaksi atomik (menghindari P2003).
+ * - Galat tak terduga (misalnya P2025 jika item sudah dihapus di tab lain) tidak ditelan,
+ *   melainkan dicatat di terminal dan ditangkap oleh app/katalog/[id]/error.tsx.
+ * - redirect() dipanggil di luar blok try/catch agar sinyal NEXT_REDIRECT tidak tertelan.
  */
 export async function hapusItem(id: number) {
   const sesi = await bacaSesi();
