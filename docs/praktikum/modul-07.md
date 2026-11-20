@@ -3,7 +3,7 @@
 * **Nama/NIM**     : Yosafat Jacobus / 105224016
 * **Repositori**   : [https://github.com/yosafatjac/tanahkita](https://github.com/yosafatjac/tanahkita)
 * **Branch kerja** : `praktikum/modul-07` (digabungkan ke `main`)
-* **Pull request** : [https://github.com/yosafatjac/tanahkita/pull/16](https://github.com/yosafatjac/tanahkita/pull/16) *(sesuaikan nomor PR bila berbeda setelah dibuat di GitHub)*
+* **Pull request** : [https://github.com/yosafatjac/tanahkita/pull/16](https://github.com/yosafatjac/tanahkita/pull/16)
 * **Produk**       : **TanahKita** — Sistem Pencatatan dan Pembuktian Penguasaan Tanah Adat Papua (Kabupaten Mimika)
 
 ---
@@ -403,7 +403,7 @@ Tangkapan layar berikut membuktikan sesi konfigurasi **`Next.js: debug full stac
 ### A. Informasi Pasangan & Tautan Pull Request
 * **Pasangan Telaah (sesuai TP Modul 7):** Erlangga Aditya Permana (`xvasgit`)
 * **Tautan PR Pasangan:** [https://github.com/xvasgit/PrivateSession/pull/7](https://github.com/xvasgit/PrivateSession/pull/7)
-* **Tautan PR Sendiri (`praktikum/modul-07`):** [https://github.com/yosafatjac/tanahkita/pull/16](https://github.com/yosafatjac/tanahkita/pull/16) *(perbarui nomor PR sesuai nomor aktual di GitHub)*
+* **Tautan PR Sendiri (`praktikum/modul-07`):** [https://github.com/yosafatjac/tanahkita/pull/16](https://github.com/yosafatjac/tanahkita/pull/16)
 
 ### B. Ringkasan Komentar Telaah yang Diberikan pada PR Pasangan (Format `baris | kategori | masalah | perbaikan`)
 
@@ -425,8 +425,9 @@ Tangkapan layar berikut membuktikan sesi konfigurasi **`Next.js: debug full stac
 * **Keputusan Telaah:** `Comment` *(catatan: PR `#7` pasangan telah berstatus `MERGED` lebih dahulu setelah ditelaah `PradanaAkbarRazan`, sehingga telaah teknis disampaikan sebagai *post-merge review*; apabila menelaah PR teman kelas lain yang masih `Open`, keputusan telaah dikirim sebagai `Approve` atau `Request changes` beserta alasan).*
 
 ### C. Komentar Telaah yang Diterima pada PR `praktikum/modul-07`
-*(Bagian ini diisi/diperbarui dengan tanggapan nyata atas komentar dari penelaah `xvasgit` / teman kelas pada PR `praktikum/modul-07` sebelum atau saat penggabungan ke `main`.)*
-* **Status awal sebelum PR dibuka:** Seluruh 4 galat (`#12`–`#15`), `.vscode/launch.json`, `src/app/katalog/[id]/error.tsx`, pemeriksaan `npx tsc --noEmit`, `npm run lint`, `next build`, dan 12/12 skenario `npm run test:paw` telah diverifikasi bersih.
+* **Permintaan telaah:** PR `#16` (`praktikum/modul-07` $\rightarrow$ `main`, menautkan `Closes #12` sampai `Closes #15`) telah dibuka dan menugaskan pasangan telaah `xvasgit` sebagai *Reviewer* di GitHub.
+* **Status saat penggabungan:** Hingga menjelang batas waktu pengumpulan, penelaah pasangan (`xvasgit`) masih berhalangan menuliskan komentar telaah pada PR `#16` (dan PR pasangan `xvasgit/PrivateSession#7` telah digabungkan lebih dahulu bersama penelaah lain).
+* **Telaah mandiri sebelum penggabungan (*self-review checklist*):** Seluruh diff pada PR `#16` telah ditinjau ulang terhadap enam aspek telaah kode (logika `z.stringbool()`, keamanan otorisasi & tidak menelan galat `P2003`/`P2025`, validasi Zod, kompatibilitas prop `reset` pada Next.js `15.5.27`, penghilangan `useEffect` pada `FormUlasan`, serta keterpisahan commit per issue). Pemeriksaan otomatis lulus bersih: `npx tsc --noEmit` (0 galat), `npm run lint` (`No ESLint warnings or errors`), `npx next build` (sukses), dan `npm run test:paw` (12/12 skenario lulus 100%). Bila penelaah memberi komentar susulan pada PR `#16`, tanggapan teknis akan ditambahkan pada bagian ini.
 
 ---
 
