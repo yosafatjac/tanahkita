@@ -51,7 +51,7 @@ export default function FormUbahItem({
 
           {state.message && (
             <div
-              role="alert"
+              role={state.success ? "status" : "alert"}
               className={`p-2.5 rounded-xl text-xs mb-3 ${
                 state.success
                   ? "bg-emerald-50 border border-emerald-300 text-emerald-800"

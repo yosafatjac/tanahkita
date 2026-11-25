@@ -2,13 +2,14 @@
 
 import React, { useActionState, useState } from "react";
 import { tambahUlasan } from "@/app/katalog/ulasan-actions";
+import { BATAS_KARAKTER_ULASAN } from "@/schemas/ulasan.schema";
 import type { FormActionState } from "@/schemas/types";
 
 interface FormUlasanProps {
   itemId: number;
 }
 
-const BATAS_KARAKTER = 280;
+const BATAS_KARAKTER = BATAS_KARAKTER_ULASAN;
 
 const initialState: FormActionState = {
   success: false,

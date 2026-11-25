@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const BATAS_KARAKTER_ULASAN = 280;
+
 export const skemaUlasan = z.object({
   nama: z
     .string({ error: "Nama pengulas wajib diisi" })
@@ -15,7 +17,7 @@ export const skemaUlasan = z.object({
     .string({ error: "Komentar atau kesaksian wajib diisi" })
     .trim()
     .min(5, "Komentar minimal 5 karakter")
-    .max(500, "Komentar maksimal 500 karakter"),
+    .max(BATAS_KARAKTER_ULASAN, `Komentar maksimal ${BATAS_KARAKTER_ULASAN} karakter`),
 });
 
 export const skemaUbahUlasan = z.object({
@@ -28,7 +30,7 @@ export const skemaUbahUlasan = z.object({
     .string({ error: "Komentar atau kesaksian wajib diisi" })
     .trim()
     .min(5, "Komentar minimal 5 karakter")
-    .max(500, "Komentar maksimal 500 karakter"),
+    .max(BATAS_KARAKTER_ULASAN, `Komentar maksimal ${BATAS_KARAKTER_ULASAN} karakter`),
 });
 
 export type SkemaUlasanInput = z.infer<typeof skemaUlasan>;

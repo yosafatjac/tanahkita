@@ -12,8 +12,10 @@ export const skemaUbahItem = z.object({
     .trim()
     .min(10, "Deskripsi patok batas minimal 10 karakter.")
     .max(1000, "Deskripsi patok batas maksimal 1.000 karakter."),
-  // Zod 4: "true" -> true, "false" -> false; nilai selain itu menjadi galat validasi
+  // Zod 4: hanya menerima "true" -> true dan "false" -> false (menolak "1", "yes", "on", dll.)
   tersedia: z.stringbool({
+    truthy: ["true"],
+    falsy: ["false"],
     error: "Status ketersediaan harus bernilai true atau false.",
   }),
 });

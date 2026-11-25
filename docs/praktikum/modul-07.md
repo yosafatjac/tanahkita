@@ -424,10 +424,18 @@ Tangkapan layar berikut membuktikan sesi konfigurasi **`Next.js: debug full stac
 
 * **Keputusan Telaah:** `Comment` *(catatan: PR `#7` pasangan telah berstatus `MERGED` lebih dahulu setelah ditelaah `PradanaAkbarRazan`, sehingga telaah teknis disampaikan sebagai *post-merge review*; apabila menelaah PR teman kelas lain yang masih `Open`, keputusan telaah dikirim sebagai `Approve` atau `Request changes` beserta alasan).*
 
-### C. Komentar Telaah yang Diterima pada PR `praktikum/modul-07`
-* **Permintaan telaah:** PR `#16` (`praktikum/modul-07` $\rightarrow$ `main`, menautkan `Closes #12` sampai `Closes #15`) telah dibuka dan menugaskan pasangan telaah `xvasgit` sebagai *Reviewer* di GitHub.
-* **Status saat penggabungan:** Hingga menjelang batas waktu pengumpulan, penelaah pasangan (`xvasgit`) masih berhalangan menuliskan komentar telaah pada PR `#16` (dan PR pasangan `xvasgit/PrivateSession#7` telah digabungkan lebih dahulu bersama penelaah lain).
-* **Telaah mandiri sebelum penggabungan (*self-review checklist*):** Seluruh diff pada PR `#16` telah ditinjau ulang terhadap enam aspek telaah kode (logika `z.stringbool()`, keamanan otorisasi & tidak menelan galat `P2003`/`P2025`, validasi Zod, kompatibilitas prop `reset` pada Next.js `15.5.27`, penghilangan `useEffect` pada `FormUlasan`, serta keterpisahan commit per issue). Pemeriksaan otomatis lulus bersih: `npx tsc --noEmit` (0 galat), `npm run lint` (`No ESLint warnings or errors`), `npx next build` (sukses), dan `npm run test:paw` (12/12 skenario lulus 100%). Bila penelaah memberi komentar susulan pada PR `#16`, tanggapan teknis akan ditambahkan pada bagian ini.
+### C. Komentar Telaah yang Diterima pada PR `praktikum/modul-07` (`#16`)
+* **Penelaah:** Erlangga Aditya Permana (`@xvasgit`, *Collaborator*)
+* **Keputusan Telaah pada PR `#16`:** **`APPROVED`** *(disertai 4 komentar baris pada tab `Files changed`, 3 blok `suggestion`, dan 1 `Nit:`)*
+
+| No | Berkas & Baris | Ringkasan Temuan Penelaah (`@xvasgit`) | Keputusan | Alasan Teknis & Tindak Lanjut |
+| :-: | :--- | :--- | :---: | :--- |
+| **1** | `src/app/katalog/actions.ts` L163 *(serta L220)* | **Keamanan:** Pengecekan RBAC `if (sesi && sesi.peran === "Pemohon Adat")` pada `ubahItem` (dan `hapusItem`) masih *fail-open* bila `sesi === null`; usul *suggestion* `if (!sesi \|\| sesi.peran === "Pemohon Adat")`. | **Ditunda ke Modul 10** | Temuan valid secara prinsip keamanan (*fail-closed* mencegah BFLA). Namun pada cakupan Modul 6–8, alur demonstrasi CRUD katalog dan skrip verifikasi belum mewajibkan cookie sesi aktif agar pengujian publik tanpa login tetap berjalan sesuai langkah reproduksi modul. Penegakan wajib `!sesi` (*fail-closed*) pada `ubahItem` dan `hapusItem` akan diterapkan menyeluruh bersama sistem Autentikasi & Otorisasi pada **Modul 10**. |
+| **2** | `src/schemas/item-edit.schema.ts` L16–L18 | **Validasi:** `z.stringbool()` tanpa opsi di Zod 4 secara bawaan juga menerima `"1"`, `"0"`, `"yes"`, `"no"`, `"on"`, `"off"`, dll.; usul *suggestion* menambahkan `truthy: ["true"]` dan `falsy: ["false"]`. | **Diterapkan** | Sangat tepat agar kontrak validasi selaras persis dengan komentar kode dan pesan galat. Opsi `truthy: ["true"]` dan `falsy: ["false"]` telah diterapkan pada `skemaUbahItem` dan diverifikasi menolak `"1"` serta `"yes"` sambil tetap menerima `"true"`/`"false"`. |
+| **3** | `src/components/FormUlasan.tsx` L11 *(vs `ulasan.schema.ts` L18)* | **Validasi:** Klien menetapkan `BATAS_KARAKTER = 280`, sedangkan server (`src/schemas/ulasan.schema.ts` L18) masih `.max(500)` sehingga `POST` langsung sepanjang 281–500 karakter tetap lolos ke PostgreSQL. | **Diterapkan** | Menyelaraskan batas server dan klien dengan mengekspor konstanta tunggal `BATAS_KARAKTER_ULASAN = 280` di `src/schemas/ulasan.schema.ts` (dipakai pada `skemaUlasan`, `skemaUbahUlasan`, dan diimpor oleh `FormUlasan.tsx` sebagai *single source of truth*). Diverifikasi: 280 karakter lolos, 281 karakter ditolak Zod server. |
+| **4** | `src/components/FormUbahItem.tsx` L54 *(dan catatan cakupan PR)* | **`Nit:` Aksesibilitas:** Atribut `role="alert"` dipasang statis walau `state.success === true`; usul *suggestion* `role={state.success ? "status" : "alert"}` agar konsisten dengan `FormUlasan.tsx`, serta catatan agar berkas lintas modul dipisah ke PR tersendiri. | **Diterapkan** | Atribut ARIA pada `FormUbahItem.tsx` L54 telah diselaraskan menjadi `role={state.success ? "status" : "alert"}` agar pesan sukses diumumkan *polite* oleh *screen reader*. Saran pemisahan cakupan PR per modul dicatat sebagai pedoman mulai Modul 8. |
+
+* **Verifikasi ulang setelah menindaklanjuti telaah:** `npx tsc --noEmit` (0 galat), `npm run lint` (`✔ No ESLint warnings or errors`), serta uji skema Zod (`"true"`/`"false"` lulus; `"1"`/`"yes"` ditolak; komentar 280 lulus dan 281 ditolak).
 
 ---
 
@@ -442,9 +450,9 @@ Tangkapan layar berikut membuktikan sesi konfigurasi **`Next.js: debug full stac
 3. **Kendala Reset `<select>` Tidak Terkontrol Setelah `useActionState`:**
    * **Penyebab:** Pada React 19, pengiriman form melalui `useActionState` mengembalikan nilai elemen tidak terkontrol (`<select defaultValue={...}>`) ke nilai awal sesaat setelah *submit*.
    * **Penyelesaian:** Mengelola `deskripsi` dan `tersedia` sebagai *controlled input* (`useState(String(tersediaAwal))`) pada `FormUbahItem.tsx` sehingga setelah server merevalidasi `tersedia: false`, nilai dropdown tetap sinkron menampilkan `"Arsip Terbatas (Tidak tersedia)"` bersamaan dengan lencana status dan pesan `"Perubahan disimpan."`.
-4. **Kendala Pasangan Telaah (`xvasgit/PrivateSession#7`) Sudah Berstatus `MERGED`:**
-   * **Penyebab:** Pasangan telaah yang terdaftar pada TP Modul 7 (`xvasgit`) telah lebih dulu menuntaskan dan menggabungkan PR `#7` bersama penelaah lain.
-   * **Penyelesaian:** Melakukan peninjauan kode menyeluruh terhadap diff `xvasgit/PrivateSession#7` dengan 3 komentar teknis spesifik (termasuk 1 blok `suggestion`), sekaligus berkoordinasi untuk menelaah PR `praktikum/modul-07` pada repositori `tanahkita` agar tetap melalui proses *peer review* sebelum digabungkan ke `main`.
+4. **Kendala Sinkronisasi Jadwal Telaah Pasangan (`xvasgit`):**
+   * **Penyebab:** PR pasangan (`xvasgit/PrivateSession#7`) telah lebih dulu digabungkan bersama penelaah lain, dan pasangan berhalangan membawa laptop menjelang batas waktu awal sehingga PR `#16` sempat digabungkan lebih dahulu agar tautan `main` tidak 404.
+   * **Penyelesaian:** Pasangan (`@xvasgit`) tetap menyelesaikan penelaahan menyeluruh (*post-merge review*) pada PR `#16` dengan status `APPROVED` beserta 4 temuan teknis (`3 suggestion`, `1 Nit:`), dan seluruh tindak lanjut (3 perbaikan kode + 1 alasan penundaan teknis ke Modul 10) telah diterapkan dan didokumentasikan pada Bagian 5C.
 
 ---
 
