@@ -5,6 +5,5 @@
 
 export * from "@/schemas";
 export { ulayatSchema as skemaItem } from "@/schemas/ulayat.schema";
-export { skemaUbahItem } from "@/schemas/item-edit.schema";
 export { loginSchema as skemaMasuk } from "@/schemas/auth.schema";
 export { skemaUlasan, skemaUbahUlasan } from "@/schemas/ulasan.schema";

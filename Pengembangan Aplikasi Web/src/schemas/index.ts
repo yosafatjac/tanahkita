@@ -5,6 +5,5 @@
 
 export * from "./types";
 export * from "./ulayat.schema";
-export * from "./item-edit.schema";
 export * from "./auth.schema";
 export * from "./ulasan.schema";

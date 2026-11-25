@@ -21,8 +21,6 @@ export default function FormUbahItem({
   tersediaAwal,
 }: FormUbahItemProps) {
   const [buka, setBuka] = useState(false);
-  const [deskripsi, setDeskripsi] = useState(deskripsiAwal);
-  const [tersedia, setTersedia] = useState(String(tersediaAwal));
   const [state, formAction, isPending] = useActionState(
     ubahItem.bind(null, id),
     initialState
@@ -46,12 +44,11 @@ export default function FormUbahItem({
       {buka && (
         <div className="mt-3 bg-stone-50 border border-stone-200 rounded-2xl p-4">
           <h4 className="text-xs font-bold text-stone-800 mb-2">
-            Perbarui Wilayah Ulayat (Prisma ORM Update + Zod z.stringbool)
+            Perbarui Wilayah Ulayat (Prisma ORM Update)
           </h4>
 
           {state.message && (
             <div
-              role="alert"
               className={`p-2.5 rounded-xl text-xs mb-3 ${
                 state.success
                   ? "bg-emerald-50 border border-emerald-300 text-emerald-800"
@@ -62,54 +59,34 @@ export default function FormUbahItem({
             </div>
           )}
 
-          <form action={formAction} noValidate className="space-y-3">
+          <form action={formAction} className="space-y-3">
             <div>
-              <label
-                htmlFor={`deskripsi-${id}`}
-                className="block text-[11px] font-semibold text-stone-700 mb-1"
-              >
-                Deskripsi Patok Batas &amp; Kawasan
+              <label className="block text-[11px] font-semibold text-stone-700 mb-1">
+                Deskripsi Patok Batas & Kawasan
               </label>
               <textarea
-                id={`deskripsi-${id}`}
                 name="deskripsi"
                 rows={3}
-                value={deskripsi}
-                onChange={(e) => setDeskripsi(e.target.value)}
-                aria-invalid={Boolean(state.fieldErrors?.deskripsi)}
+                defaultValue={deskripsiAwal}
                 className="w-full px-3 py-2 border rounded-xl text-xs focus:ring-2 focus:ring-amber-500 bg-white"
                 required
               />
-              {state.fieldErrors?.deskripsi && (
-                <p role="alert" className="text-[11px] text-red-600 mt-1 font-medium">
-                  {state.fieldErrors.deskripsi[0]}
-                </p>
-              )}
             </div>
 
-            <div>
-              <label
-                htmlFor={`tersedia-${id}`}
-                className="block text-[11px] font-semibold text-stone-700 mb-1"
-              >
-                Status Ketersediaan Arsip Adat
-              </label>
-              <select
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
                 id={`tersedia-${id}`}
                 name="tersedia"
-                value={tersedia}
-                onChange={(e) => setTersedia(e.target.value)}
-                aria-invalid={Boolean(state.fieldErrors?.tersedia)}
-                className="w-full px-3 py-2 border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-500 bg-white"
+                defaultChecked={tersediaAwal}
+                className="rounded border-stone-300 text-amber-600 focus:ring-amber-500"
+              />
+              <label
+                htmlFor={`tersedia-${id}`}
+                className="text-xs text-stone-700 cursor-pointer"
               >
-                <option value="true">Tersedia / Terbuka</option>
-                <option value="false">Arsip Terbatas (Tidak tersedia)</option>
-              </select>
-              {state.fieldErrors?.tersedia && (
-                <p role="alert" className="text-[11px] text-red-600 mt-1 font-medium">
-                  {state.fieldErrors.tersedia[0]}
-                </p>
-              )}
+                Wilayah Terbuka / Tersedia dalam Registrasi Adat
+              </label>
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
