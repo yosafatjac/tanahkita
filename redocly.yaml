@@ -1,0 +1,5 @@
+extends:
+  - recommended
+rules:
+  # Server lokal dipakai selama praktikum Modul 8
+  no-server-example.com: off

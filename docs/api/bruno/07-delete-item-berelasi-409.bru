@@ -1,0 +1,16 @@
+meta {
+  name: 07 - DELETE Item Berelasi Ulasan (409 Conflict)
+  type: http
+  seq: 7
+}
+
+delete {
+  url: http://localhost:3000/api/v1/item/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 409
+  res.headers['content-type']: contains application/problem+json
+}

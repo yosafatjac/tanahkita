@@ -1,0 +1,24 @@
+meta {
+  name: 04 - POST Kategori Tidak Dikenal (422 Unprocessable Content)
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/api/v1/item
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "judul": "ab",
+    "kategori": "transportasi",
+    "deskripsi": ""
+  }
+}
+
+assert {
+  res.status: eq 422
+  res.headers['content-type']: contains application/problem+json
+}

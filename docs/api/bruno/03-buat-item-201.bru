@@ -1,0 +1,26 @@
+meta {
+  name: 03 - POST Buat Item Baru (201 Created)
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/v1/item
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "judul": "Zona Sagu Koleksi Bruno",
+    "kategori": "ZonaSagu",
+    "distrik": "Mimika Timur",
+    "luasHektar": 22.5,
+    "deskripsi": "Wilayah sagu komunal yang diuji melalui koleksi Bruno"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.headers.location: isDefined
+}
