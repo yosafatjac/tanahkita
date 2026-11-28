@@ -1,0 +1,367 @@
+openapi: 3.1.0
+info:
+  title: TanahKita — Katalog Wilayah Ulayat API
+  version: 0.3.0
+  description: >-
+    RESTful API v1 untuk pengelolaan arsip wilayah ulayat adat (Item) dan
+    kesaksian saksi batas adat (Ulasan) pada produk TanahKita. Seluruh respons
+    galat mengikuti standar Problem Details (RFC 9457).
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Server pengembangan lokal Next.js
+security: []
+tags:
+  - name: Item
+    description: Pengelolaan arsip wilayah ulayat adat Kabupaten Mimika
+  - name: Ulasan
+    description: Pembacaan kesaksian saksi batas adat yang berelasi dengan wilayah ulayat
+paths:
+  /item:
+    get:
+      tags: [Item]
+      summary: Daftar wilayah ulayat dengan paginasi dan filter kategori
+      operationId: daftarItem
+      parameters:
+        - name: halaman
+          in: query
+          description: Nomor halaman (mulai dari 1)
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: batas
+          in: query
+          description: Jumlah item per halaman (maksimum 50)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+        - name: kategori
+          in: query
+          description: Filter opsional berdasarkan kategori wilayah ulayat
+          schema:
+            $ref: "#/components/schemas/Kategori"
+      responses:
+        "200":
+          description: Satu halaman daftar wilayah ulayat beserta metadata paginasi
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HalamanItem"
+        "400":
+          $ref: "#/components/responses/Problem"
+    post:
+      tags: [Item]
+      summary: Mendaftarkan wilayah ulayat adat baru
+      operationId: buatItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemBaru"
+      responses:
+        "201":
+          description: Wilayah ulayat baru berhasil dibuat
+          headers:
+            Location:
+              description: URI relatif item wilayah ulayat yang baru dibuat
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "400":
+          $ref: "#/components/responses/Problem"
+        "409":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+
+  /item/{id}:
+    parameters:
+      - $ref: "#/components/parameters/IdItem"
+    get:
+      tags: [Item]
+      summary: Mengambil detail satu wilayah ulayat berdasarkan ID
+      operationId: ambilItem
+      responses:
+        "200":
+          description: Detail wilayah ulayat ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "400":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+    patch:
+      tags: [Item]
+      summary: Memperbarui sebagian atribut wilayah ulayat
+      operationId: ubahSebagianItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemUbah"
+      responses:
+        "200":
+          description: Wilayah ulayat berhasil diperbarui
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "400":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+        "409":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+    delete:
+      tags: [Item]
+      summary: Menghapus satu wilayah ulayat yang belum memiliki ulasan
+      operationId: hapusItem
+      responses:
+        "204":
+          description: Wilayah ulayat berhasil dihapus tanpa isi respons
+        "400":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+        "409":
+          $ref: "#/components/responses/Problem"
+
+  /item/{id}/ulasan:
+    parameters:
+      - $ref: "#/components/parameters/IdItem"
+    get:
+      tags: [Ulasan]
+      summary: Mengambil daftar kesaksian saksi batas adat pada wilayah ulayat tertentu
+      operationId: daftarUlasanItem
+      responses:
+        "200":
+          description: Daftar ulasan/kesaksian wilayah ulayat ditemukan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DaftarUlasan"
+        "400":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+
+components:
+  parameters:
+    IdItem:
+      name: id
+      in: path
+      required: true
+      description: ID numerik bilangan bulat positif wilayah ulayat
+      schema:
+        type: integer
+        minimum: 1
+
+  schemas:
+    Kategori:
+      type: string
+      enum:
+        - HutanAdat
+        - ZonaSagu
+        - PesisirUlayat
+        - LembahKeramat
+        - PerkebunanKomunal
+
+    ItemBaru:
+      type: object
+      required:
+        - judul
+        - kategori
+        - deskripsi
+      properties:
+        judul:
+          type: string
+          minLength: 3
+          maxLength: 80
+        kategori:
+          $ref: "#/components/schemas/Kategori"
+        distrik:
+          type: string
+          minLength: 3
+          maxLength: 80
+          default: Kuala Kencana
+        luasHektar:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 100000
+          default: 10
+        deskripsi:
+          type: string
+          minLength: 3
+          maxLength: 500
+        tersedia:
+          type: boolean
+          default: true
+
+    ItemUbah:
+      type: object
+      minProperties: 1
+      properties:
+        judul:
+          type: string
+          minLength: 3
+          maxLength: 80
+        kategori:
+          $ref: "#/components/schemas/Kategori"
+        distrik:
+          type: string
+          minLength: 3
+          maxLength: 80
+        luasHektar:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 100000
+        deskripsi:
+          type: string
+          minLength: 3
+          maxLength: 500
+        tersedia:
+          type: boolean
+
+    Item:
+      allOf:
+        - $ref: "#/components/schemas/ItemBaru"
+        - type: object
+          required:
+            - id
+            - distrik
+            - luasHektar
+            - tersedia
+            - dibuatPada
+          properties:
+            id:
+              type: integer
+              minimum: 1
+            gambar:
+              type:
+                - string
+                - "null"
+            dibuatPada:
+              type: string
+              format: date-time
+
+    MetaPaginasi:
+      type: object
+      required:
+        - halaman
+        - batas
+        - total
+      properties:
+        halaman:
+          type: integer
+          minimum: 1
+        batas:
+          type: integer
+          minimum: 1
+          maximum: 50
+        total:
+          type: integer
+          minimum: 0
+
+    HalamanItem:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Item"
+        meta:
+          $ref: "#/components/schemas/MetaPaginasi"
+
+    Ulasan:
+      type: object
+      required:
+        - id
+        - itemId
+        - nama
+        - nilai
+        - komentar
+        - dibuatPada
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        itemId:
+          type: integer
+          minimum: 1
+        nama:
+          type: string
+          minLength: 2
+          maxLength: 60
+        nilai:
+          type: integer
+          minimum: 1
+          maximum: 5
+        komentar:
+          type: string
+          minLength: 5
+          maxLength: 280
+        dibuatPada:
+          type: string
+          format: date-time
+
+    DaftarUlasan:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ulasan"
+
+    Problem:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri-reference
+          default: about:blank
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri-reference
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+  responses:
+    Problem:
+      description: Galat terstruktur dalam format Problem Details (RFC 9457)
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"

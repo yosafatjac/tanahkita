@@ -1,0 +1,20 @@
+meta {
+  name: 02 - GET Daftar Item Batas 500 (400 Bad Request)
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/api/v1/item?batas=500
+  body: none
+  auth: none
+}
+
+params:query {
+  batas: 500
+}
+
+assert {
+  res.status: eq 400
+  res.headers['content-type']: contains application/problem+json
+}

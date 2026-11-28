@@ -1,0 +1,21 @@
+meta {
+  name: 01 - GET Daftar Item (200 OK)
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/api/v1/item?halaman=1&batas=2
+  body: none
+  auth: none
+}
+
+params:query {
+  halaman: 1
+  batas: 2
+}
+
+assert {
+  res.status: eq 200
+  res.body.meta.batas: eq 2
+}
